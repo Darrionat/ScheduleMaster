@@ -12,7 +12,6 @@ import me.darrionat.schedulemaster.repositories.ShiftsRepository;
 import me.darrionat.schedulemaster.utils.Utils;
 
 public class ScheduleService {
-
 	private ShiftsRepository shiftsRepository;
 	private EmployeeRepository employeeRepository;
 
@@ -29,11 +28,11 @@ public class ScheduleService {
 		HashMap<Shift, Employee> toReturn = new HashMap<>();
 
 		// To-be sorted into the final schedule. Map of compatible shifts and employees
-		ShiftEmployeeTable shiftEmployeeMap = getShiftEmployeesTable(dailyShifts, employees);
+		ShiftEmployeeTable shiftEmployeeTable = getShiftEmployeesTable(dailyShifts, employees);
 
-		sortGivens(toReturn, shiftEmployeeMap);
+		sortGivens(toReturn, shiftEmployeeTable);
 
-		if (shiftEmployeeMap.isEmpty()) {
+		if (shiftEmployeeTable.isEmpty()) {
 			return toReturn;
 		}
 		// TODO: Continue with logical deduction
@@ -52,7 +51,7 @@ public class ScheduleService {
 	 * @param table    the map of shifts and the compatible employees
 	 */
 	private void sortGivens(HashMap<Shift, Employee> schedule, ShiftEmployeeTable table) {
-		ShiftEmployeeTable clone = new ShiftEmployeeTable(table.getTable());
+		ShiftEmployeeTable clone = table.clone();
 		clone.putAll(table);
 
 		boolean changed = false;
@@ -63,14 +62,14 @@ public class ScheduleService {
 			Employee employee = entry.getValue()[0];
 			schedule.put(entry.getKey(), employee);
 			// Remove from the to-sort-into-schedule list
-			shiftEmployeeMap.remove(entry.getKey());
+			table.removeShift(entry.getKey());
 			changed = true;
-			removeEmployeeFromShifts(shiftEmployeeMap, employee);
+			removeEmployeeFromShifts(table, employee);
 			break;
 
 		}
 		if (changed) {
-			sortGivens(schedule, shiftEmployeeMap);
+			sortGivens(schedule, table);
 		}
 	}
 
@@ -78,30 +77,30 @@ public class ScheduleService {
 	 * Removes an employee from all shifts that are still being sorted because they
 	 * have already been sorted into the schedule
 	 * 
-	 * @param shiftEmployeesMap the map that is being sorted into the schedule
-	 * @param employee          the employee to remove from all shifts because they
-	 *                          have been sorted into the schedule already
+	 * @param table    the map that is being sorted into the schedule
+	 * @param employee the employee to remove from all shifts because they have been
+	 *                 sorted into the schedule already
 	 */
-	private void removeEmployeeFromShifts(HashMap<Shift, Employee[]> shiftEmployeesMap, Employee employee) {
-		HashMap<Shift, Employee[]> clone = new HashMap<>();
-		clone.putAll(shiftEmployeesMap);
+	private void removeEmployeeFromShifts(ShiftEmployeeTable table, Employee employee) {
+		ShiftEmployeeTable clone = table.clone();
+		clone.putAll(table);
 		for (Entry<Shift, Employee[]> entry : clone.entrySet()) {
 			Employee[] employees = entry.getValue();
 			if (Utils.arrayContainsValue(employees, employee)) {
 				employees = (Employee[]) Utils.removeValueFromArray(employees, employee);
-				shiftEmployeesMap.put(entry.getKey(), employees);
+				table.setPotentialEmployees(entry.getKey(), employees);
 			}
 		}
 	}
 
 	/**
 	 * Generates a HashMap that has a key value of Shift and an entry value of a
-	 * list of employees. This determines the compatability of shifts and what
+	 * list of employees. This determines the compatibility of shifts and what
 	 * employees can work them. Determined by employee availability and job position
 	 * 
 	 * @param shifts    collection of shifts that needs to be filled
-	 * @param employees all availible employees to check
-	 * @return a HashMap of shift, employee compatability
+	 * @param employees all available employees to check
+	 * @return a HashMap of shift, employee compatibility
 	 */
 	private ShiftEmployeeTable getShiftEmployeesTable(List<Shift> shifts, Employee[] employees) {
 		HashMap<Shift, Employee[]> shiftEmployeesMap = new HashMap<>();
@@ -115,7 +114,7 @@ public class ScheduleService {
 					continue;
 				}
 				// If employee is available during this shift and are able to perform the job,
-				// mark them for compatability
+				// mark them for compatibility
 				Employee[] value = shiftEmployeesMap.get(shift);
 				Employee[] temp = new Employee[value.length + 1];
 				// Add all employees from value to temp
@@ -147,7 +146,7 @@ public class ScheduleService {
 		// Sort HashMap
 		HashMap<Employee, Integer> sortedMap = Utils.sortByValue(hm);
 
-		// Reimplement into new array in sorted order
+		// Implement into new array in sorted order
 		Employee[] arr = new Employee[employees.length];
 		int index = 0;
 		for (Employee e : sortedMap.keySet()) {
