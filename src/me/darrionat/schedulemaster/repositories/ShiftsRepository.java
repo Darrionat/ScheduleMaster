@@ -54,9 +54,9 @@ public class ShiftsRepository {
 	 * @return the success of addition of the shift
 	 * @throws Exception when a shift is not contained in one weekday
 	 */
-	public boolean addRequiredShift(Shift shift) throws Exception {
+	public boolean addRequiredShift(Shift shift) {
 		if (!isInOneDay(shift)) {
-			throw new Exception("Shift exceeds into another day");
+			return false;
 		}
 		String dayKey = getWeekdayKey(shift);
 
@@ -77,7 +77,7 @@ public class ShiftsRepository {
 
 			Properties prop = new Properties();
 
-			prop.setProperty(dayKey, Shift.getStringFromList(shiftList));
+			prop.setProperty(dayKey, Shift.getStringFromList(shiftList, true));
 
 			// Save properties to file
 			prop.store(output, null);

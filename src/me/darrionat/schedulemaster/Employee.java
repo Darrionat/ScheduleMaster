@@ -39,7 +39,32 @@ public class Employee {
 		return availableShifts;
 	}
 
+	public void addAvailableShift(Shift shift) {
+		availableShifts.add(shift);
+	}
+
 	public void setAvailableShifts(List<Shift> availableShifts) {
 		this.availableShifts = availableShifts;
+	}
+
+	public boolean compatibleWithShift(Shift shift) {
+		if (!positionsContainJob(shift)) {
+			return false;
+		}
+		long start = shift.getStart();
+		long end = shift.getEnd();
+		for (Shift availableShift : availableShifts) {
+			if (start >= availableShift.getStart() && end <= availableShift.getEnd())
+				return true;
+		}
+		return false;
+	}
+
+	private boolean positionsContainJob(Shift shift) {
+		Position jobPosition = shift.getPosition();
+		for (Position position : positions)
+			if (position.getJobName().equals(jobPosition.getJobName()))
+				return true;
+		return false;
 	}
 }

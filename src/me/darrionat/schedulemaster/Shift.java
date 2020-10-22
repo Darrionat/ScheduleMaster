@@ -3,30 +3,55 @@ package me.darrionat.schedulemaster;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
+/**
+ * A Shift object represents a start to end time of which a defined position is
+ * required or is able to be done. Every Shift object is unique due to the
+ * unique ID which is generated every time one is instantated.
+ * 
+ * @author Darrion Thornburgh
+ */
 public class Shift {
 
-	private Date start;
-	private Date end;
+	private long start;
+	private long end;
 	private Position position;
 
+	/**
+	 * ID's are generated to avoid the issue of a schedule needing two positions at
+	 * the same time. This is because the Schedule object is based on a HashMap
+	 * which does not allow duplicated keys (shifts). The probability of two shifts
+	 * having the same ID is equal to 36^8.
+	 */
+	private String id;
+
 	public Shift(Date start, Date end, Position position) {
-		this.start = start;
-		this.end = end;
+		this.start = start.getTime();
+		this.end = end.getTime();
 		this.position = position;
+		this.id = generateID();
 	}
 
 	public Shift(long start, long end, Position position) {
-		this.start = new Date(start);
-		this.end = new Date(end);
+		this.start = start;
+		this.end = end;
 		this.position = position;
+		this.id = generateID();
 	}
 
-	public Date getStart() {
+	private Shift(long start, long end, Position position, String id) {
+		this.start = start;
+		this.end = end;
+		this.position = position;
+		this.id = id;
+	}
+
+	public long getStart() {
 		return start;
 	}
 
-	public Date getEnd() {
+	public long getEnd() {
 		return end;
 	}
 
@@ -39,14 +64,37 @@ public class Shift {
 	}
 
 	/**
-	 * The String that seperates the start and end of a shift
+	 * Generates a unique ID that is 8 characters long randomly selected from the
+	 * alphabet as well as all integers from 0 to 9.
+	 * 
+	 * @return a random ID
+	 */
+	private String generateID() {
+		String alphabet = "abcdefghijklmnopqrstuvwxyz1234567890";
+		Random r = new Random();
+
+		String id = "";
+		for (int i = 0; i < 8; i++) {
+			char randomCharacter = alphabet.charAt(r.nextInt(alphabet.length()));
+			id = id + randomCharacter;
+		}
+		return id;
+	}
+
+	/**
+	 * The seperator character for values when converted to or from a String.
 	 */
 	private final static String SEP = "-";
 
-	public String toString() {
-		if (position != null)
-			return String.valueOf(start.getTime()) + SEP + String.valueOf(end.getTime()) + SEP + position.toString();
-		return String.valueOf(start.getTime()) + SEP + String.valueOf(end.getTime());
+	/**
+	 * Converts the Shift object into a String. The string will change depending on
+	 * if the Position is defined.
+	 */
+	public String toString(boolean includePosition) {
+		String s = String.valueOf(start) + SEP + String.valueOf(end) + SEP + id;
+		if (position != null && includePosition)
+			return s + SEP + position.toString();
+		return s;
 	}
 
 	/**
@@ -57,16 +105,17 @@ public class Shift {
 	 */
 	public static Shift fromString(String shift) {
 		String[] arr = shift.split(SEP);
-		Date start = new Date(Long.parseLong(arr[0]));
-		Date end = new Date(Long.parseLong(arr[1]));
+		long start = Long.parseLong(arr[0]);
+		long end = Long.parseLong(arr[1]);
+		String id = arr[2];
 
 		Position position;
 		try {
-			position = Position.fromString(arr[2]);
+			position = Position.fromString(arr[3]);
 		} catch (ArrayIndexOutOfBoundsException e) {
 			position = null;
 		}
-		return new Shift(start, end, position);
+		return new Shift(start, end, position, id);
 	}
 
 	/**
@@ -87,10 +136,17 @@ public class Shift {
 		return shifts;
 	}
 
-	public static String getStringFromList(List<Shift> shifts) {
+	/**
+	 * Converts a list of Shift objects into a String object. Utilized to save the
+	 * available shifts to an employee's file.
+	 * 
+	 * @param shifts the list of shifts to convert into a String
+	 * @return the list converted into a string
+	 */
+	public static String getStringFromList(List<Shift> shifts, boolean includePosition) {
 		String[] arr = new String[shifts.size()];
 		for (int i = 0; i < arr.length; i++) {
-			arr[i] = shifts.get(i).toString();
+			arr[i] = shifts.get(i).toString(includePosition);
 		}
 		return String.join(",", arr);
 	}

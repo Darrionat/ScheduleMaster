@@ -3,8 +3,10 @@ package me.darrionat.schedulemaster.services;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import me.darrionat.schedulemaster.Employee;
+import me.darrionat.schedulemaster.Schedule;
 import me.darrionat.schedulemaster.Shift;
 import me.darrionat.schedulemaster.ShiftEmployeeTable;
 import me.darrionat.schedulemaster.repositories.EmployeeRepository;
@@ -20,14 +22,19 @@ public class ScheduleService {
 		this.employeeRepository = employeeRepository;
 	}
 
-	private HashMap<Shift, Employee> generateSchedule(String dayKey) {
+	public Schedule generateSchedule(String dayKey) {
 		Employee[] employees = employeeRepository.getAllEmployees();
 		List<Shift> dailyShifts = shiftsRepository.getShiftsForDay(dayKey);
 
+		if (employees.length == 0 || dailyShifts == null) {
+			return null;
+		}
+
 		// The map that will be returned in the end as the final schedule
-		HashMap<Shift, Employee> toReturn = new HashMap<>();
+		Schedule toReturn = new Schedule(new HashMap<>());
 
 		// To-be sorted into the final schedule. Map of compatible shifts and employees
+
 		ShiftEmployeeTable shiftEmployeeTable = getShiftEmployeesTable(dailyShifts, employees);
 
 		sortGivens(toReturn, shiftEmployeeTable);
@@ -38,8 +45,11 @@ public class ScheduleService {
 		// TODO: Continue with logical deduction
 		employees = sortByAvailability(employees);
 
-		// getPermutations(table);
-
+		Set<Schedule> permutations = shiftEmployeeTable.getPermutations();
+		System.out.println("Permutations (" + permutations.size() + "):");
+		for (Schedule schedule : permutations) {
+			System.out.println(schedule);
+		}
 		return null;
 	}
 
@@ -47,11 +57,13 @@ public class ScheduleService {
 	 * Adds the shifts that can be determined by logical deduction and the process
 	 * of elimination to the schedule.
 	 * 
-	 * @param schedule the final schedule object that is being changed
+	 * @param toReturn the final schedule object that is being changed
 	 * @param table    the map of shifts and the compatible employees
 	 */
-	private void sortGivens(HashMap<Shift, Employee> schedule, ShiftEmployeeTable table) {
-		ShiftEmployeeTable clone = table.clone();
+
+	private void sortGivens(Schedule toReturn, ShiftEmployeeTable table) {
+		ShiftEmployeeTable clone = table.cloneTable();
+
 		clone.putAll(table);
 
 		boolean changed = false;
@@ -60,16 +72,17 @@ public class ScheduleService {
 				continue;
 			// If the list only contains one compatible employee, add them to the schedule
 			Employee employee = entry.getValue()[0];
-			schedule.put(entry.getKey(), employee);
+			toReturn.addShift(entry.getKey(), employee);
 			// Remove from the to-sort-into-schedule list
 			table.removeShift(entry.getKey());
 			changed = true;
+			// employee is null
 			removeEmployeeFromShifts(table, employee);
 			break;
 
 		}
 		if (changed) {
-			sortGivens(schedule, table);
+			sortGivens(toReturn, table);
 		}
 	}
 
@@ -82,7 +95,7 @@ public class ScheduleService {
 	 *                 sorted into the schedule already
 	 */
 	private void removeEmployeeFromShifts(ShiftEmployeeTable table, Employee employee) {
-		ShiftEmployeeTable clone = table.clone();
+		ShiftEmployeeTable clone = table.cloneTable();
 		clone.putAll(table);
 		for (Entry<Shift, Employee[]> entry : clone.entrySet()) {
 			Employee[] employees = entry.getValue();
@@ -102,27 +115,28 @@ public class ScheduleService {
 	 * @param employees all available employees to check
 	 * @return a HashMap of shift, employee compatibility
 	 */
+	// TODO: Fix this returning null employees
 	private ShiftEmployeeTable getShiftEmployeesTable(List<Shift> shifts, Employee[] employees) {
 		HashMap<Shift, Employee[]> shiftEmployeesMap = new HashMap<>();
 
 		for (Shift shift : shifts) {
-			shiftEmployeesMap.put(shift, new Employee[employees.length]);
+			shiftEmployeesMap.put(shift, new Employee[0]);
 			for (Employee employee : employees) {
-				if (!employee.getAvailableShifts().contains(shift))
+				if (!employee.compatibleWithShift(shift))
 					continue;
-				if (!employee.getPositions().contains(shift.getPosition())) {
-					continue;
-				}
 				// If employee is available during this shift and are able to perform the job,
 				// mark them for compatibility
-				Employee[] value = shiftEmployeesMap.get(shift);
-				Employee[] temp = new Employee[value.length + 1];
+
+				// TODO: Temp has a null value at the start every time
+				Employee[] compatibleEmployees = shiftEmployeesMap.get(shift);
+				Employee[] temp = new Employee[compatibleEmployees.length + 1];
 				// Add all employees from value to temp
-				for (int i = 0; i < value.length; i++) {
-					temp[i] = value[i];
+				for (int i = 0; i < compatibleEmployees.length; i++) {
+					temp[i] = compatibleEmployees[i];
 				}
 				// Add employee to temp
-				temp[value.length] = employee;
+				temp[compatibleEmployees.length] = employee;
+
 				// Insert temp as the new array
 				shiftEmployeesMap.put(shift, temp);
 			}

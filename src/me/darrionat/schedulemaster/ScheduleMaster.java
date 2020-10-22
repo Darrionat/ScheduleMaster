@@ -14,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import me.darrionat.schedulemaster.statics.Bootstrapper;
+
 public class ScheduleMaster {
 
 	public static void main(String[] args) {
@@ -37,11 +39,11 @@ public class ScheduleMaster {
 		ScheduleMaster scheduleMaster = new ScheduleMaster();
 
 		// Usage
-		Set<char[]> permutations = scheduleMaster.getPermutations(table);
+		// Set<char[]> permutations = scheduleMaster.getPermutations(table);
 
-		// Bootstrapper bootstrapper = Bootstrapper.getBootstrapper();
-		// bootstrapper.initialize(new ScheduleMaster());
-		new ScheduleMaster().createWindow();
+		Bootstrapper bootstrapper = Bootstrapper.getBootstrapper();
+		bootstrapper.initialize(new ScheduleMaster());
+		// new ScheduleMaster().createWindow();
 	}
 
 	private Set<char[]> permutations;
@@ -98,6 +100,22 @@ public class ScheduleMaster {
 	}
 
 	/**
+	 * Fetches all possible values of the row below the current row
+	 * 
+	 * @param table    the table that contains the rows
+	 * @param tableRow the row of which is being
+	 * @return the potential children of the tableRow above
+	 */
+	public char[] getPossibleChoices(HashMap<Integer, char[]> table, int tableRow) {
+		if (tableRow > table.keySet().size()) {
+			return null;
+		}
+		int firstSlot = (int) table.keySet().toArray()[tableRow - 1];
+		char[] allPossible = table.get(firstSlot);
+		return allPossible;
+	}
+
+	/**
 	 * Removes the permutations that contain a repeated value
 	 */
 	public void removeRepeatedValuePermutations() {
@@ -122,22 +140,6 @@ public class ScheduleMaster {
 		for (char c : arr)
 			set.add(c);
 		return arr.length != set.size();
-	}
-
-	/**
-	 * Fetches all possible values of the row below the current row
-	 * 
-	 * @param table    the table that contains the rows
-	 * @param tableRow the row of which is being
-	 * @return the potential children of the tableRow above
-	 */
-	public char[] getPossibleChoices(HashMap<Integer, char[]> table, int tableRow) {
-		if (tableRow > table.keySet().size()) {
-			return null;
-		}
-		int firstSlot = (int) table.keySet().toArray()[tableRow - 1];
-		char[] allPossible = table.get(firstSlot);
-		return allPossible;
 	}
 
 	@SuppressWarnings("unused")

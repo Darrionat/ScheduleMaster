@@ -1,16 +1,12 @@
 package me.darrionat.schedulemaster.statics;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import me.darrionat.schedulemaster.Employee;
-import me.darrionat.schedulemaster.Position;
 import me.darrionat.schedulemaster.ScheduleMaster;
-import me.darrionat.schedulemaster.Shift;
 import me.darrionat.schedulemaster.repositories.EmployeeRepository;
 import me.darrionat.schedulemaster.repositories.FileRepository;
+import me.darrionat.schedulemaster.repositories.PositionRepository;
+import me.darrionat.schedulemaster.repositories.ShiftsRepository;
 import me.darrionat.schedulemaster.services.EmployeeService;
+import me.darrionat.schedulemaster.services.ScheduleService;
 
 public class Bootstrapper {
 
@@ -20,9 +16,12 @@ public class Bootstrapper {
 
 	private FileRepository fileRepository;
 	private EmployeeRepository employeeRepository;
+	private PositionRepository positionRepository;
+	private ShiftsRepository shiftsRepository;
+
 	// Services
-	@SuppressWarnings("unused")
 	private EmployeeService employeeService;
+	private ScheduleService scheduleService;
 
 	private Bootstrapper() {
 	}
@@ -30,26 +29,27 @@ public class Bootstrapper {
 	public void initialize(ScheduleMaster scheduleMaster) {
 		fileRepository = new FileRepository();
 		employeeRepository = new EmployeeRepository(fileRepository);
+		positionRepository = new PositionRepository(fileRepository);
+		shiftsRepository = new ShiftsRepository(fileRepository);
 
-		List<Position> positions = new ArrayList<>();
-		positions.add(new Position("CEO"));
-		positions.add(new Position("CFO"));
-		List<Shift> availableShifts = new ArrayList<>();
-		availableShifts.add(new Shift(new Date(), new Date(System.currentTimeMillis() + 1000), null));
-		availableShifts.add(new Shift(new Date(), new Date(System.currentTimeMillis() + 5000), null));
-		Employee employee = new Employee("Steve Jobs", positions, availableShifts);
-		employeeRepository.createEmployeeFile(employee);
-
-		for (Employee e : employeeRepository.getAllEmployees()) {
-			System.out.println(e.getName());
-			System.out.println(e.getAvailableShifts().get(0).getStart());
-			System.out.println(e.getAvailableShifts().get(0).getEnd());
-			System.out.println(e.getAvailableShifts().get(1).getStart());
-			System.out.println(e.getAvailableShifts().get(1).getEnd());
-			System.out.println(e.getPositions());
-		}
 		// Services
 		employeeService = new EmployeeService(fileRepository, employeeRepository);
+		scheduleService = new ScheduleService(shiftsRepository, employeeRepository);
+
+		/*
+		 * Position ceo = new Position("CEO"); Position cfo = new Position("CFO"); Shift
+		 * shift = new Shift(new Date(), new Date(System.currentTimeMillis() + 1000),
+		 * ceo); Shift shift2 = new Shift(new Date(), new
+		 * Date(System.currentTimeMillis() + 5000), cfo); List<Position> positions = new
+		 * ArrayList<>(); List<Shift> availableShifts = new ArrayList<>();
+		 * positions.add(ceo); positions.add(cfo); availableShifts.add(shift);
+		 * availableShifts.add(shift2); Employee employee = new Employee("Steve Jobs",
+		 * positions, availableShifts); employeeRepository.createEmployeeFile(employee);
+		 * shiftsRepository.addRequiredShift(shift);
+		 * shiftsRepository.addRequiredShift(shift2);
+		 */
+
+		scheduleService.generateSchedule("w");
 	}
 
 	public static Bootstrapper getBootstrapper() {

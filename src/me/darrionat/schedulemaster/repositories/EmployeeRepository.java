@@ -41,7 +41,7 @@ public class EmployeeRepository {
 
 			prop.setProperty(name, employee.getName());
 			prop.setProperty(positions, Position.getStringFromList(employee.getPositions()));
-			prop.setProperty(availableShifts, Shift.getStringFromList(employee.getAvailableShifts()));
+			prop.setProperty(availableShifts, Shift.getStringFromList(employee.getAvailableShifts(), false));
 
 			// Save properties to file
 			prop.store(output, null);
