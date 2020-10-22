@@ -104,13 +104,18 @@ public class ShiftsRepository {
 	 * Determines the weekday of the shift given. Utilized in order to get the key
 	 * for the .properties file of shifts
 	 * 
-	 * @param shift
-	 * @return
+	 * @param shift the shift that is getting its weekday obtained
+	 * @return a String which is the key within the .properties file for that dayt6
 	 */
 	private String getWeekdayKey(Shift shift) {
 		SimpleDateFormat formatter = new SimpleDateFormat("u");
 		int dayInt = Integer.parseInt(formatter.format(shift.getStart()));
 
+		return getWeekdayKey(dayInt);
+
+	}
+
+	private String getWeekdayKey(int dayInt) {
 		String weekday;
 		switch (dayInt) {
 		case 1:
