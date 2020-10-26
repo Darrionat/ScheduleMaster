@@ -66,6 +66,26 @@ public class Schedule {
 	}
 
 	/**
+	 * Gets the total wage cost of schedule by employee wages and shift duration.
+	 * 
+	 * @return total cost of the schedule.
+	 */
+	public double getCost() {
+		double cost = 0;
+		for (Entry<Shift, Employee> entry : table.entrySet()) {
+
+			// Wage and shift length
+			double employeeWage = entry.getValue().getWage(entry.getKey().getPosition());
+			double shiftLength = entry.getKey().getHours();
+
+			// If the employee's wage is defined, add it after multiplying it by time.
+			if (employeeWage > 0)
+				cost += (employeeWage * shiftLength);
+		}
+		return cost;
+	}
+
+	/**
 	 * Prints the schedule in the console. Purely for debugging purposes.
 	 */
 	public void print() {

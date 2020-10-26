@@ -150,4 +150,16 @@ public class Shift {
 		}
 		return String.join(",", arr);
 	}
+
+	/**
+	 * Calculates the length of the shift in hours.
+	 * 
+	 * @return the length of the shift.
+	 */
+	public double getHours() {
+		long millis = end - start;
+		double seconds = millis / 1000;
+		double hours = seconds / 3600;
+		return hours;
+	}
 }

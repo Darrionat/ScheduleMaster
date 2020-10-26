@@ -61,7 +61,11 @@ public class ScheduleService {
 		Set<Schedule> permutations = shiftEmployeeTable.getPermutations();
 		System.out.println("Permutations (" + permutations.size() + "):");
 		for (Schedule schedule : permutations) {
+			for (Entry<Shift, Employee> entry : schedule.getTable().entrySet()) {
+				System.out.println(entry.getKey().getPosition().getJobName() + ": " + entry.getValue().getName());
+			}
 			System.out.println(schedule);
+			System.out.println(schedule.getCost());
 		}
 		return null;
 	}
@@ -128,7 +132,6 @@ public class ScheduleService {
 	 * @param employees all available employees to check
 	 * @return a HashMap of shift, employee compatibility
 	 */
-	// TODO: Fix this returning null employees
 	private ShiftEmployeeTable getShiftEmployeesTable(List<Shift> shifts, Employee[] employees) {
 		HashMap<Shift, Employee[]> shiftEmployeesMap = new HashMap<>();
 
@@ -140,7 +143,6 @@ public class ScheduleService {
 				// If employee is available during this shift and are able to perform the job,
 				// mark them for compatibility
 
-				// TODO: Temp has a null value at the start every time
 				Employee[] compatibleEmployees = shiftEmployeesMap.get(shift);
 				Employee[] temp = new Employee[compatibleEmployees.length + 1];
 				// Add all employees from value to temp

@@ -74,9 +74,11 @@ public class Position {
 	public static double getWageFromString(String position) {
 		String[] arr = position.split(SEP);
 		double wage = -1;
+
+		// Throws both NumberFormatException and ArrayIndexOutOfBoundsException
 		try {
 			wage = Double.valueOf(arr[1]);
-		} catch (NumberFormatException e) {
+		} catch (Exception e) {
 			wage = -1;
 		}
 		return wage;
