@@ -47,7 +47,7 @@ public class EmployeeRepository {
 			Properties prop = new Properties();
 
 			prop.setProperty(name, employee.getName());
-			prop.setProperty(positions, Position.getStringFromList(employee.getPositions()));
+			prop.setProperty(positions, Position.getStringFromMap(employee.getPositions()));
 			prop.setProperty(availableShifts, Shift.getStringFromList(employee.getAvailableShifts(), false));
 
 			// Save properties to file
@@ -154,7 +154,7 @@ public class EmployeeRepository {
 
 		Employee employee = new Employee();
 		employee.setName(name);
-		employee.setPositions(Position.getListFromString(positions));
+		employee.setPositions(Position.getMapFromString(positions));
 		employee.setAvailableShifts(Shift.getListFromString(availableShifts));
 
 		return employee;

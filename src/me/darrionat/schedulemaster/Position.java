@@ -46,25 +46,75 @@ public class Position {
 		return jobName;
 	}
 
+	/**
+	 * A separator character which is utilized in saving data about the Position
+	 * object.
+	 */
 	private final static String SEP = "-";
-
-	public String toString(double wage) {
-		return toString() + SEP + wage;
-	}
 
 	public static Position fromString(String position) {
 		String[] arr = position.split(SEP);
 		return new Position(arr[0]);
 	}
 
+	/**
+	 * @return a String including the wage associated with the position
+	 */
+	public String toString(double wage) {
+		return toString() + SEP + wage;
+	}
+
+	/**
+	 * Gets the wage of a position from the position as a string. This is used to
+	 * add to an employee's map of positions with the corresponding wage.
+	 * 
+	 * @param position the position to retrieve data from as a string.
+	 * @return an employee's position's wage.
+	 */
+	public static double getWageFromString(String position) {
+		String[] arr = position.split(SEP);
+		double wage = -1;
+		try {
+			wage = Double.valueOf(arr[1]);
+		} catch (NumberFormatException e) {
+			wage = -1;
+		}
+		return wage;
+	}
+
+	/**
+	 * Formats an inputed String which is then read and returned as a List of
+	 * Position.
+	 * 
+	 * @param positionsStr a string of positions which can be
+	 * @return a list of positions from an inputed string.
+	 */
+	@Deprecated
 	public static List<Position> getListFromString(String positionsStr) {
 		List<Position> positions = new ArrayList<>();
 		for (String s : positionsStr.split(",")) {
-			positions.add(Position.fromString(s));
+			positions.add(fromString(s));
 		}
 		if (positions.isEmpty())
 			return null;
 		return positions;
+	}
+
+	/**
+	 * Formats an inputed String which is then read and returned as a HashMap of
+	 * Position as the key and Double, which represents a wage, as the value.
+	 * 
+	 * @param positionsStr a string of positions which can be
+	 * @return a HashMap of positions and wages from an inputed string.
+	 */
+	public static HashMap<Position, Double> getMapFromString(String positionsStr) {
+		HashMap<Position, Double> map = new HashMap<>();
+		for (String s : positionsStr.split(",")) {
+			map.put(fromString(s), getWageFromString(s));
+		}
+		if (map.isEmpty())
+			return null;
+		return map;
 	}
 
 	/**
@@ -74,7 +124,7 @@ public class Position {
 	 * @param hashMap The list of positions being formatted
 	 * @return The concatenated string of all positions
 	 */
-	public static String getStringFromList(HashMap<Position, Double> hashMap) {
+	public static String getStringFromMap(HashMap<Position, Double> hashMap) {
 		String[] positionArray = new String[hashMap.size()];
 		int index = 0;
 		for (Entry<Position, Double> entry : hashMap.entrySet()) {
