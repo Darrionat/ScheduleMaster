@@ -11,10 +11,25 @@ import java.util.Map;
 
 import me.darrionat.schedulemaster.Employee;
 
+/**
+ * The Utils class contains methods that are more abstract and can be used in
+ * more than one class; therefore, all methods within the Utils class are
+ * static.
+ * 
+ * @author Darrion Thornburgh
+ */
 public class Utils {
 
-	// HashMap sorting derived from
-	// https://www.geeksforgeeks.org/sorting-a-hashmap-according-to-values/
+	/**
+	 * Returns a HashMap that is sorted by the value. This is utilized in order to
+	 * prioritize employees by how often they are available, putting those who have
+	 * the least amount of availability first. HashMap sorting derived from:
+	 * https://www.geeksforgeeks.org/sorting-a-hashmap-according-to-values/
+	 * 
+	 * @param hm the map being sorted by value
+	 * @return a HashMap of employees with the least amount of available shifts
+	 *         being moved to first in the map
+	 */
 	public static HashMap<Employee, Integer> sortByValue(HashMap<Employee, Integer> hm) {
 		// Create a list from elements of HashMap
 		List<Map.Entry<Employee, Integer>> list = new LinkedList<Map.Entry<Employee, Integer>>(hm.entrySet());
@@ -26,7 +41,7 @@ public class Utils {
 			}
 		});
 
-		// put data from sorted list to hashmap
+		// Put data from sorted list to HashMap
 		HashMap<Employee, Integer> temp = new LinkedHashMap<Employee, Integer>();
 		for (Map.Entry<Employee, Integer> aa : list) {
 			temp.put(aa.getKey(), aa.getValue());
@@ -35,7 +50,7 @@ public class Utils {
 	}
 
 	/**
-	 * Returns if an array contains a defined value
+	 * @return if an array contains a defined value
 	 */
 	public static boolean arrayContainsValue(Object[] arr, Object value) {
 		for (Object object : arr) {

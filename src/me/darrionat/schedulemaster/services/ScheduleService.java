@@ -13,6 +13,12 @@ import me.darrionat.schedulemaster.repositories.EmployeeRepository;
 import me.darrionat.schedulemaster.repositories.ShiftsRepository;
 import me.darrionat.schedulemaster.utils.Utils;
 
+/**
+ * The ScheduleService class is used for creating schedules for the week or
+ * defined weekdays.
+ * 
+ * @author Darrion Thornburgh
+ */
 public class ScheduleService {
 	private ShiftsRepository shiftsRepository;
 	private EmployeeRepository employeeRepository;
@@ -22,6 +28,13 @@ public class ScheduleService {
 		this.employeeRepository = employeeRepository;
 	}
 
+	/**
+	 * Generates a Schedule for a given day
+	 * 
+	 * @param dayKey the day of which is being used to create a schedule
+	 * @return the optimal Schedule for a given day based upon Employee shifts,
+	 *         wages, and the the requirements put forward by the user.
+	 */
 	public Schedule generateSchedule(String dayKey) {
 		Employee[] employees = employeeRepository.getAllEmployees();
 		List<Shift> dailyShifts = shiftsRepository.getShiftsForDay(dayKey);

@@ -5,11 +5,20 @@ import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
 
+/**
+ * The Schedule class is to create objects that represent a schedule. These
+ * schedules are utilized in exporting to .csv files and displaying information
+ * in the Schedule Master GUI.
+ * 
+ * @author Darrion Thornburgh
+ */
 public class Schedule {
 
 	private HashMap<Shift, Employee> table;
 
 	/**
+	 * Creates a Schedule object from an inputed HashMap or table.
+	 * 
 	 * @param schedule A HashMap that has a key for every shift that needs a single
 	 *                 employee to fill
 	 */
@@ -42,6 +51,12 @@ public class Schedule {
 		return table.size() != set.size();
 	}
 
+	/**
+	 * Creates a deep copy of the schedule of which is not tied to the values of the
+	 * original object.
+	 * 
+	 * @return a deep copy of the schedule.
+	 */
 	public Schedule cloneSchedule() {
 		HashMap<Shift, Employee> table = new HashMap<>();
 		for (Entry<Shift, Employee> entry : this.table.entrySet()) {
@@ -50,6 +65,9 @@ public class Schedule {
 		return new Schedule(table);
 	}
 
+	/**
+	 * Prints the schedule in the console. Purely for debugging purposes.
+	 */
 	public void print() {
 		System.out.println("Permutation/Schedule");
 		for (Entry<Shift, Employee> entry : table.entrySet())

@@ -7,8 +7,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 /**
- * A table representing each shift associated with a value of employees that
- * could potentially work that shift
+ * The ShiftEmployeeTable class represents a table containing each shift
+ * associated with a value of employees that could potentially work that shift.
  * 
  * @author Darrion Thornburgh
  */
@@ -18,6 +18,12 @@ public class ShiftEmployeeTable {
 
 	public Set<Schedule> permutations;
 
+	/**
+	 * Creates an instance of ShiftEmployeeTable with the given table.
+	 * 
+	 * @param table a HashMap containing keys of shifts along with the values of the
+	 *              employees which are able to work for their given shift.
+	 */
 	public ShiftEmployeeTable(HashMap<Shift, Employee[]> table) {
 		this.table = table;
 		permutations = new HashSet<>();
@@ -27,15 +33,37 @@ public class ShiftEmployeeTable {
 		return table;
 	}
 
+	/**
+	 * Sets the employees who can work the given shift.
+	 * 
+	 * @param shift     the time frame and position which can be worked by the
+	 *                  employees.
+	 * @param employees the employees who can work the defined shift.
+	 */
 	public void setPotentialEmployees(Shift shift, Employee[] employees) {
 		table.put(shift, employees);
 	}
 
+	/**
+	 * @param shift the time frame and position which is being used to fetch
+	 *              available employees.
+	 * @return the employees who can work the given shift.
+	 */
 	public Employee[] getPotentialEmployees(Shift shift) {
 		return table.get(shift);
 	}
 
+	/**
+	 * Creates a deep copy of the table of which is not tied to the values of the
+	 * original object.
+	 * 
+	 * @return a deep copy of the ShiftEmployeeTable object
+	 */
 	public ShiftEmployeeTable cloneTable() {
+		HashMap<Shift, Employee[]> table = new HashMap<>();
+		for (Entry<Shift, Employee[]> entry : this.table.entrySet()) {
+			table.put(entry.getKey(), entry.getValue());
+		}
 		return new ShiftEmployeeTable(table);
 	}
 
@@ -81,7 +109,9 @@ public class ShiftEmployeeTable {
 	 * parameters are used within the method for recursion and should be given the
 	 * initial as defined below.
 	 * 
-	 *
+	 * @param tableRow the number of the row that is being checked of the table
+	 * @param schedule the schedule that is recursively passed through to generate
+	 *                 permutations
 	 */
 
 	private Set<Schedule> getPermutations(int tableRow, Schedule schedule) {
@@ -112,7 +142,7 @@ public class ShiftEmployeeTable {
 	 * Fetches all possible values of the row below the current row
 	 * 
 	 * @param shift the shift that contains some possible choices
-	 * @return the potential children of the tableRow above
+	 * @return the potential employees that could work for that shift
 	 */
 	private Employee[] getPossibleChoices(Shift shift) {
 		return table.get(shift);

@@ -13,6 +13,13 @@ import java.util.Properties;
 
 import me.darrionat.schedulemaster.Shift;
 
+/**
+ * The ShiftsRepository class is a tool for accessing, saving, or editing data
+ * of all the Shift objects. These are used to define what positions need to be
+ * worked and when.
+ * 
+ * @author Darrion Thornburgh
+ */
 public class ShiftsRepository {
 
 	private FileRepository fileRepository;

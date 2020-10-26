@@ -8,6 +8,13 @@ import me.darrionat.schedulemaster.repositories.ShiftsRepository;
 import me.darrionat.schedulemaster.services.EmployeeService;
 import me.darrionat.schedulemaster.services.ScheduleService;
 
+/**
+ * The Bootstrapper class is used to initialize all repositories then services
+ * which are dependent on these repositories. This sets up the rest of the
+ * program to be functional.
+ * 
+ * @author Darrion Thornburgh
+ */
 public class Bootstrapper {
 
 	private static Bootstrapper instance;

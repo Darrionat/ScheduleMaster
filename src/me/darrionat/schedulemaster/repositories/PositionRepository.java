@@ -10,6 +10,12 @@ import java.util.Properties;
 
 import me.darrionat.schedulemaster.Position;
 
+/**
+ * The PositionRepository is a class which fetches, saves, and edits data for
+ * all positions of Schedule Master.
+ * 
+ * @author Darrion Thornburgh
+ */
 public class PositionRepository {
 
 	private FileRepository fileRepository;

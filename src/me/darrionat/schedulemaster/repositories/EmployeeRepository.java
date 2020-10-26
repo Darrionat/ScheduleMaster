@@ -12,6 +12,13 @@ import me.darrionat.schedulemaster.Employee;
 import me.darrionat.schedulemaster.Position;
 import me.darrionat.schedulemaster.Shift;
 
+/**
+ * The EmployeeRepository class is to fetch all data that is associated with
+ * employees. This includes the `employees` directory, fetching all employees,
+ * creating files for individual employees, and file actions.
+ * 
+ * @author Darrion Thornburgh
+ */
 public class EmployeeRepository {
 
 	private FileRepository fileRepository;

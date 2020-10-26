@@ -8,7 +8,7 @@ import java.util.Random;
 /**
  * A Shift object represents a start to end time of which a defined position is
  * required or is able to be done. Every Shift object is unique due to the
- * unique ID which is generated every time one is instantated.
+ * unique ID which is generated every time one is instantiated.
  * 
  * @author Darrion Thornburgh
  */
@@ -82,7 +82,7 @@ public class Shift {
 	}
 
 	/**
-	 * The seperator character for values when converted to or from a String.
+	 * The separator character for values when converted to or from a String.
 	 */
 	private final static String SEP = "-";
 
@@ -100,7 +100,7 @@ public class Shift {
 	/**
 	 * Returns a Shift object from an inputed string if formatted properly
 	 * 
-	 * @param shift the string to conver into a shift
+	 * @param shift the string to convert into a shift
 	 * @return Shift object with start and end but no position defined
 	 */
 	public static Shift fromString(String shift) {

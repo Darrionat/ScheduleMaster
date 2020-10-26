@@ -8,6 +8,12 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileSystemView;
 
+/**
+ * The FileRepository is a class which provides methods to set up the main
+ * directory for Schedule Master.
+ * 
+ * @author Darrion Thornburgh
+ */
 public class FileRepository {
 
 	public FileRepository() {

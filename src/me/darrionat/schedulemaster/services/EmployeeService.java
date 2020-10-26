@@ -7,6 +7,11 @@ import me.darrionat.schedulemaster.Employee;
 import me.darrionat.schedulemaster.repositories.EmployeeRepository;
 import me.darrionat.schedulemaster.repositories.FileRepository;
 
+/**
+ * The EmployeeService is used to manage all employees.
+ * 
+ * @author Darrion Thornburgh
+ */
 public class EmployeeService {
 
 	private FileRepository fileRepository;
