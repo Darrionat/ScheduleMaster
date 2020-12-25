@@ -1,11 +1,18 @@
 package me.darrionat.schedulemaster.statics;
 
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
+import java.io.File;
+import java.io.IOException;
+
 import me.darrionat.schedulemaster.ScheduleMaster;
 import me.darrionat.schedulemaster.repositories.EmployeeRepository;
 import me.darrionat.schedulemaster.repositories.FileRepository;
 import me.darrionat.schedulemaster.repositories.PositionRepository;
 import me.darrionat.schedulemaster.repositories.ShiftsRepository;
 import me.darrionat.schedulemaster.services.EmployeeService;
+import me.darrionat.schedulemaster.services.GuiService;
 import me.darrionat.schedulemaster.services.ScheduleService;
 
 /**
@@ -29,11 +36,19 @@ public class Bootstrapper {
 	// Services
 	private EmployeeService employeeService;
 	private ScheduleService scheduleService;
+	private GuiService guiService;
 
 	private Bootstrapper() {
 	}
 
 	public void initialize(ScheduleMaster scheduleMaster) {
+		try {
+			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("res/anson-regular-webfont.ttf")));
+		} catch (IOException | FontFormatException e) {
+			e.printStackTrace();
+		}
+
 		fileRepository = new FileRepository();
 		employeeRepository = new EmployeeRepository(fileRepository);
 		positionRepository = new PositionRepository(fileRepository);
@@ -42,21 +57,7 @@ public class Bootstrapper {
 		// Services
 		employeeService = new EmployeeService(fileRepository, employeeRepository);
 		scheduleService = new ScheduleService(shiftsRepository, employeeRepository);
-
-		/*
-		 * Position ceo = new Position("CEO"); Position cfo = new Position("CFO"); Shift
-		 * shift = new Shift(new Date(), new Date(System.currentTimeMillis() + 1000),
-		 * ceo); Shift shift2 = new Shift(new Date(), new
-		 * Date(System.currentTimeMillis() + 5000), cfo); List<Position> positions = new
-		 * ArrayList<>(); List<Shift> availableShifts = new ArrayList<>();
-		 * positions.add(ceo); positions.add(cfo); availableShifts.add(shift);
-		 * availableShifts.add(shift2); Employee employee = new Employee("Steve Jobs",
-		 * positions, availableShifts); employeeRepository.createEmployeeFile(employee);
-		 * shiftsRepository.addRequiredShift(shift);
-		 * shiftsRepository.addRequiredShift(shift2);
-		 */
-
-		scheduleService.generateSchedule("w");
+		guiService = new GuiService();
 	}
 
 	public static Bootstrapper getBootstrapper() {

@@ -43,7 +43,6 @@ public class EmployeeRepository {
 	public boolean createEmployeeFile(Employee employee) {
 		File path = getEmployeeFile(employee);
 		try (OutputStream output = new FileOutputStream(path)) {
-
 			Properties prop = new Properties();
 
 			prop.setProperty(name, employee.getName());

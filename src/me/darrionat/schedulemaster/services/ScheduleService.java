@@ -93,10 +93,8 @@ public class ScheduleService {
 			// Remove from the to-sort-into-schedule list
 			table.removeShift(entry.getKey());
 			changed = true;
-			// employee is null
 			removeEmployeeFromShifts(table, employee);
 			break;
-
 		}
 		if (changed) {
 			sortGivens(toReturn, table);
