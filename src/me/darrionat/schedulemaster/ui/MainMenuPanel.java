@@ -9,8 +9,9 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+import me.darrionat.schedulemaster.interfaces.Menu;
 import me.darrionat.schedulemaster.services.GuiService;
-import me.darrionat.schedulemaster.ui.events.MainMenuMouse;
+import me.darrionat.schedulemaster.ui.events.MenuButtonListener;
 
 /**
  * The MainMenu is a JPanel that is added to the GuiService JFrame. The MainMenu
@@ -20,27 +21,23 @@ import me.darrionat.schedulemaster.ui.events.MainMenuMouse;
  * 
  * @author Darrion Thornburgh
  */
-public class MainMenu extends JPanel {
+public class MainMenuPanel extends JPanel implements Menu {
 
 	private static final long serialVersionUID = 1L;
 
 	private Graphics g;
 	private Image icon;
-
-	public MainMenu() {
-		registerListeners();
-		loadIcon();
-	}
+	private MenuButtonListener listener;
 
 	private final String[] buttonTexts = { "View Schedules", "Edit Schedule", "Employees", "Shifts", "Information" };
 
 	/**
 	 * Contains all buttons contained within the Main Menu
 	 */
-	public List<MenuButton> buttons = new ArrayList<>();
+	private List<MenuButton> buttons = new ArrayList<>();
 
-	public List<MenuButton> getButtons() {
-		return buttons;
+	public MainMenuPanel() {
+		loadIcon();
 	}
 
 	@Override
@@ -49,53 +46,17 @@ public class MainMenu extends JPanel {
 		this.g = g;
 		setBackground(new Color(0));
 		drawIcon(0.65 * GuiService.width, 0.15 * GuiService.height, 300, 300);
-		createButtons();
+		initButtons();
+		drawButtons();
 	}
 
-	private MainMenuMouse listener;
-
-	public void registerListeners() {
-		listener = new MainMenuMouse(this);
-		addMouseListener(listener);
-		addMouseMotionListener(listener);
-	}
-
-	public void stopListeners() {
-		removeMouseListener(listener);
-		removeMouseMotionListener(listener);
-		listener = null;
-	}
-
-	private void createButtons() {
-
+	private void initButtons() {
 		double x = 0.05 * GuiService.width;
 		if (buttons.isEmpty())
 			for (int i = 0; i < buttonTexts.length; i++) {
 				String text = buttonTexts[i];
 				buttons.add(new MenuButton(this, text, x, GuiService.height * (0.4 + i * 0.08), 350, 75));
 			}
-
-		for (MenuButton button : buttons)
-			button.draw(g);
-	}
-
-	/**
-	 * Moves a button to the end of the list to make it displayed last, making it
-	 * the top layer
-	 * 
-	 * @param button the button being moved to the top layer
-	 */
-	public void moveButtonToTopLayer(MenuButton button) {
-		List<MenuButton> newButtons = new ArrayList<>();
-
-		for (MenuButton mB : buttons) {
-			if (mB == button)
-				continue;
-			newButtons.add(mB);
-		}
-		newButtons.add(button);
-		buttons.clear();
-		buttons.addAll(newButtons);
 	}
 
 	private void loadIcon() {
@@ -105,5 +66,42 @@ public class MainMenu extends JPanel {
 
 	private void drawIcon(double x, double y, int w, int h) {
 		g.drawImage(icon, (int) x, (int) y, w, h, null, null);
+	}
+
+	@Override
+	public JPanel getPanel() {
+		return this;
+	}
+
+	@Override
+	public List<MenuButton> getButtons() {
+		return buttons;
+	}
+
+	@Override
+	public void setButtons(List<MenuButton> newButtons) {
+		buttons.clear();
+		buttons.addAll(newButtons);
+	}
+
+	@Override
+	public void drawButtons() {
+		for (MenuButton button : buttons)
+			button.draw(g);
+	}
+
+	@Override
+	public boolean hasListener() {
+		return listener != null;
+	}
+
+	@Override
+	public MenuButtonListener getListener() {
+		return listener;
+	}
+
+	@Override
+	public void setListener(MenuButtonListener listener) {
+		this.listener = listener;
 	}
 }

@@ -6,33 +6,114 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.Rectangle2D;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.swing.JPanel;
 
+import me.darrionat.schedulemaster.interfaces.Menu;
 import me.darrionat.schedulemaster.services.GuiService;
-import me.darrionat.schedulemaster.utils.Utils;
+import me.darrionat.schedulemaster.ui.animations.Animation;
+import me.darrionat.schedulemaster.ui.animations.MenuButtonClickAnimation;
+import me.darrionat.schedulemaster.ui.animations.MenuButtonHoverAnimation;
 
 /**
- * Buttons that are located within the Main Menu
+ * The MenuButton class is intended to make it easier to create buttons all
+ * across a program. These buttons can be pushed to perform a function or open a
+ * menu. Buttons are composed of a rectangle with text located inside.
  * 
  * @author Darrion Thornburgh
  */
 public class MenuButton {
 
+	/**
+	 * Menu object which button is within
+	 */
+	private Menu menu;
+	/**
+	 * JPanel of the menu
+	 */
 	private JPanel panel;
+	/**
+	 * Graphics to draw onto
+	 */
 	private Graphics2D g2d;
+
+	/*
+	 * Button's Graphical Components
+	 */
 	public Rectangle2D rect;
 	private String text;
+	public double x, y;
+	public int w, h;
 
-	private double x, y;
-	private int w, h;
-
-	private final Color textColor = new Color(255, 255, 255);
-	private final Color boxColor = new Color(70, 70, 70, 128);
-	private final Color selectedColor = new Color(0, 184, 230, 200);
+	/*
+	 * Colors
+	 */
+	/**
+	 * The default color of the rectangle
+	 */
+	private Color boxColor = new Color(70, 70, 70, 128);
+	/**
+	 * The default color of the rectangle when being hovered
+	 */
+	private Color selectedColor = new Color(0, 184, 230, 200);
+	/**
+	 * The default color of the text within the rectangle
+	 */
+	private Color textColor = new Color(255, 255, 255);
+	/**
+	 * The current color of the rectangle
+	 */
 	private Color color = boxColor;
+
+	/*
+	 * Animation Fields and Objects
+	 */
+
+	/**
+	 * Current animation
+	 */
+	private Animation animation;
+	/**
+	 * Hover Animation Expanding
+	 */
+	private Animation hoverAnimationExpand = new MenuButtonHoverAnimation(this, true);
+	/**
+	 * Hover Animation Compressing
+	 */
+	private Animation hoverAnimationCompress = new MenuButtonHoverAnimation(this, false);
+	/**
+	 * Click Animation
+	 */
+	private Animation clickAnimation = new MenuButtonClickAnimation(this);
+
+	/*
+	 * Hover Animation
+	 */
+	/**
+	 * Current expansion of the button
+	 */
+	public int currentStep = 0;
+	/**
+	 * Max expansion of the button
+	 */
+	public int maxStep = 100;
+	/**
+	 * If the button is being hovered over
+	 */
+	private boolean selected = false;
+
+	/*
+	 * Click Animation
+	 */
+
+	/**
+	 * Whether the box has been clicked or not
+	 */
+	private boolean clicked = false;
+	/**
+	 * The color at the time of the box being clicked
+	 */
+	private Color clickedColor;
 
 	/**
 	 * Creates a MenuButton object. The button contains a text field and a rectangle
@@ -47,9 +128,9 @@ public class MenuButton {
 	 * @param w     Width of the rectangle
 	 * @param h     Height of the rectangle
 	 */
-	public MenuButton(JPanel panel, String s, double x, double y, int w, int h) {
-		this.panel = panel;
-		this.g2d = (Graphics2D) panel.getGraphics();
+	public MenuButton(Menu menu, String s, double x, double y, int w, int h) {
+		this.menu = menu;
+		this.panel = menu.getPanel();
 		this.text = s;
 		this.x = x;
 		this.y = y;
@@ -60,8 +141,7 @@ public class MenuButton {
 	/**
 	 * Draw the menu button, composed of a rectangle and text
 	 * 
-	 * @param x the X location of the button
-	 * @param y the Y location of the button
+	 * @param g the graphics object of the Menu
 	 */
 	public void draw(Graphics g) {
 		g2d = (Graphics2D) g;
@@ -69,6 +149,37 @@ public class MenuButton {
 		drawRectangle();
 		if (text != null)
 			drawText();
+	}
+
+	/**
+	 * Improves graphics of the button, especially the text
+	 */
+	private void addRenderingHints() {
+		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		rh.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		g2d.setRenderingHints(rh);
+	}
+
+	/**
+	 * Draws the base rectangle of the button
+	 */
+	private void drawRectangle() {
+		rect = new Rectangle2D.Double(x, y, w, h);
+
+		// Stroke width = 0
+		g2d.setStroke(new BasicStroke(0));
+		g2d.setColor(color);
+		g2d.fill(rect);
+		g2d.draw(rect);
+	}
+
+	/**
+	 * Draws the text of the button; requires that the rectangle has already been
+	 * drawn
+	 */
+	private void drawText() {
+		g2d.setColor(textColor);
+		GuiService.drawLeftAlignedString(g2d, text, rect, GuiService.buttonFont);
 	}
 
 	/**
@@ -83,60 +194,6 @@ public class MenuButton {
 		return rect.contains(x, y);
 	}
 
-	/**
-	 * Improves graphics of the button
-	 */
-	private void addRenderingHints() {
-		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		rh.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-		g2d.setRenderingHints(rh);
-	}
-
-	/**
-	 * Draws the base rectangle of the button
-	 * 
-	 * @param x X Coordinate of the button
-	 * @param y Y Coordinate of the button
-	 */
-	private void drawRectangle() {
-		rect = new Rectangle2D.Double(x, y, w, h);
-
-		// Stroke width = 0
-		g2d.setStroke(new BasicStroke(0));
-		g2d.setColor(color);
-		g2d.fill(rect);
-		g2d.draw(rect);
-	}
-
-	/**
-	 * Gets the current color of the button based on the hover animation
-	 * 
-	 * @return a color based upon the percentage of the hover animation
-	 */
-	private Color calculateHoverColor() {
-		return Utils.getColorByPercent(boxColor, selectedColor, currentStep, maxStep);
-	}
-
-	/**
-	 * Gets the current color of the button based on the hover animation
-	 * 
-	 * @return a color based upon the percentage of the hover animation
-	 */
-	private Color calculateClickColor() {
-		return Utils.getColorByPercent(clickedColor, Color.WHITE, currentClickFrame, maxClickFrame);
-	}
-
-	/**
-	 * Draws the text of the button; requires that the rectangle has already been
-	 * drawn
-	 */
-	private void drawText() {
-		g2d.setColor(textColor);
-		GuiService.drawLeftAlignedString(g2d, text, rect, GuiService.buttonFont);
-	}
-
-	private boolean selected = false;
-
 	public boolean isSelected() {
 		return selected;
 	}
@@ -150,9 +207,10 @@ public class MenuButton {
 	 */
 	public void select(boolean expand) {
 		selected = true;
-		if (expand)
-			dX = 2;
-		doHoverAnimation();
+		if (animation != null && animation instanceof MenuButtonHoverAnimation) {
+			return;
+		}
+		hoverAnimationExpand.run();
 	}
 
 	/**
@@ -163,102 +221,122 @@ public class MenuButton {
 	 */
 	public void deselect(boolean compress) {
 		selected = false;
-		if (compress)
-			dX = -2;
-		doHoverAnimation();
+		hoverAnimationCompress.run();
 	}
 
-	// The rate of the button extending, 1 for moving outwards and -1 for moving
-	// inwards
-	private int dX = 0;
-	// Current expansion of the button
-	private int currentStep = 0;
-	// Max expansion of the box
-	private int maxStep = 100;
-	// Timer of the hover animation
-	private Timer timer;
-
 	/**
-	 * Changes the button from a half transparent shade of gray to a opaque hue of
-	 * light blue and vice versa
+	 * Performs a clicking animation and opens the menu that the button is defined
+	 * to open
 	 */
-	private void doHoverAnimation() {
-		if (clicked)
-			return;
-		if (timer != null) {
-			timer.cancel();
-		}
-		timer = new Timer();
-		timer.schedule(new TimerTask() {
-			@Override
-			public void run() {
-				boolean stopped;
-				if (dX == 2) {
-					stopped = currentStep == maxStep;
-				} else {
-					stopped = currentStep == 0;
-				}
-				if (stopped) {
-					cancel();
-					return;
-				}
-				currentStep += dX;
-				w += dX;
-				color = calculateHoverColor();
-				panel.repaint();
-			}
-		}, 0, 7);
-	}
-
-	// Ellipse used for animation
-	// Saves the progress in the click animation
-	private int currentClickFrame = 0;
-	// Determines how many iterations are used in the click animation
-	private int maxClickFrame = 100;
-
-	/**
-	 * Creates an animation that opens another menu
-	 */
-	public boolean clicked = false;
-	private Color clickedColor;
-
 	public void click() {
-		if (timer != null)
-			timer.cancel();
+		if (animation != null)
+			animation.cancel();
 		clicked = true;
 		clickedColor = color;
 
-		((MainMenu) panel).moveButtonToTopLayer(this);
-		timer = new Timer();
-		timer.schedule(new TimerTask() {
-			int startX = (int) x;
-			int startY = (int) y;
-			// Upper-Left
-			int diffX1 = 0 - startX;
-			int diffY1 = 0 - startY;
-			// Lower-Right
-			int diffX2 = panel.getWidth() - startX;
-			int diffY2 = panel.getHeight() - startY;
-			// Upper-left corner
-			double frameChangeX1 = (double) diffX1 / (double) maxClickFrame;
-			double frameChangeY1 = (double) diffY1 / (double) maxClickFrame;
-			// Lower-right corner
-			double frameChangeX2 = (double) diffX2 / (double) maxClickFrame;
-			double frameChangeY2 = (double) diffY2 / (double) maxClickFrame;
+		GuiService.moveButtonToTopLayer(menu, this);
+		clickAnimation.run();
+	}
 
-			@Override
-			public void run() {
-				x += frameChangeX1;
-				y += frameChangeY1;
-				w += frameChangeX2 + Math.abs(frameChangeX1);
-				h += frameChangeY2 + Math.abs(frameChangeY1);
-				color = calculateClickColor();
-				panel.repaint();
-				panel.getComponents();
-				if (currentClickFrame == maxClickFrame)
-					this.cancel();
-				currentClickFrame++;
-			}
-		}, 0, 3);
+	/**
+	 * Fetches the current animation that is occurring. Useful for canceling an
+	 * animation while in progress
+	 * 
+	 * @return a Timer object which can be cancelled
+	 */
+	public Animation getAnimation() {
+		return animation;
+	}
+
+	/**
+	 * Sets the current animation of button. This does not mean that the animation
+	 * will run automatically, it must be ran by Animation.run()
+	 * 
+	 * @param animation the animation being set to be the current animation
+	 */
+	public void setAnimation(Animation animation) {
+		this.animation = animation;
+	}
+
+	/**
+	 * Gets the current color of the rectangle of the button
+	 * 
+	 * @return the color of the rectangle
+	 */
+	public Color getColor() {
+		return color;
+	}
+
+	/**
+	 * Sets the default color of the button's rectangle
+	 * 
+	 * @param color the new color being defined
+	 */
+	public void setColor(Color color) {
+		this.color = color;
+	}
+
+	/**
+	 * Fetches the panel that the button is located in
+	 * 
+	 * @return the JPanel object that the MenuButton is within
+	 */
+	public JPanel getPanel() {
+		return panel;
+	}
+
+	/**
+	 * Fetches the state of the object's clicked field
+	 * 
+	 * @return returns the state if the object has been clicked
+	 */
+	public boolean wasClicked() {
+		return clicked;
+	}
+
+	/**
+	 * Gets the default color of the MenuButton's rectangle
+	 * 
+	 * @return returns the color of the rectangle
+	 */
+	public Color getBoxColor() {
+		return boxColor;
+	}
+
+	/**
+	 * Changes the default color of the MenuButton
+	 * 
+	 * @param color the new color
+	 */
+	public void setBoxColor(Color color) {
+		this.boxColor = color;
+	}
+
+	/**
+	 * Gets the default color of the MenuButton's rectangle when hovered over
+	 * 
+	 * @return the color of the rectangle during a MenuButtonHoverAnimation
+	 */
+	public Color getSelectedColor() {
+		return selectedColor;
+	}
+
+	/**
+	 * Changes the default color of the MenuButton during a MenuButtonHoverAnimation
+	 * 
+	 * @param color the new color
+	 */
+	public void setSelectedColor(Color color) {
+		this.selectedColor = color;
+	}
+
+	/**
+	 * Gets the color the button was when it was clicked; used in
+	 * MenuButtonClickAnimation
+	 * 
+	 * @return the color the button was when {@link #click()} was ran
+	 */
+	public Color getClickedColor() {
+		return clickedColor;
 	}
 }

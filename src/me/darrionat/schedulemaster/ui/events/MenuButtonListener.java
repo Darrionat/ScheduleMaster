@@ -4,19 +4,19 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-import me.darrionat.schedulemaster.ui.MainMenu;
+import me.darrionat.schedulemaster.interfaces.Menu;
 import me.darrionat.schedulemaster.ui.MenuButton;
 
-public class MainMenuMouse implements MouseListener, MouseMotionListener {
+public class MenuButtonListener implements MouseListener, MouseMotionListener {
 
-	private MainMenu menu;
+	private Menu menu;
 
 	/**
 	 * Creates the Listener class for the MainMenu
 	 * 
 	 * @param menu the instance of main menu
 	 */
-	public MainMenuMouse(MainMenu menu) {
+	public MenuButtonListener(Menu menu) {
 		this.menu = menu;
 	}
 	// Start MouseListener
