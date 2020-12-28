@@ -10,7 +10,7 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.JPanel;
 
 import me.darrionat.schedulemaster.interfaces.Menu;
-import me.darrionat.schedulemaster.services.GuiService;
+import me.darrionat.schedulemaster.services.UiService;
 import me.darrionat.schedulemaster.ui.animations.Animation;
 import me.darrionat.schedulemaster.ui.animations.MenuButtonClickAnimation;
 import me.darrionat.schedulemaster.ui.animations.MenuButtonHoverAnimation;
@@ -179,7 +179,7 @@ public class MenuButton {
 	 */
 	private void drawText() {
 		g2d.setColor(textColor);
-		GuiService.drawLeftAlignedString(g2d, text, rect, GuiService.buttonFont);
+		UiService.drawLeftAlignedString(g2d, text, rect, UiService.buttonFont);
 	}
 
 	/**
@@ -234,7 +234,7 @@ public class MenuButton {
 		clicked = true;
 		clickedColor = color;
 
-		GuiService.moveButtonToTopLayer(menu, this);
+		UiService.moveButtonToTopLayer(menu, this);
 		clickAnimation.run();
 	}
 

@@ -12,7 +12,7 @@ import me.darrionat.schedulemaster.repositories.FileRepository;
 import me.darrionat.schedulemaster.repositories.PositionRepository;
 import me.darrionat.schedulemaster.repositories.ShiftsRepository;
 import me.darrionat.schedulemaster.services.EmployeeService;
-import me.darrionat.schedulemaster.services.GuiService;
+import me.darrionat.schedulemaster.services.UiService;
 import me.darrionat.schedulemaster.services.ScheduleService;
 
 /**
@@ -36,7 +36,7 @@ public class Bootstrapper {
 	// Services
 	private EmployeeService employeeService;
 	private ScheduleService scheduleService;
-	private GuiService guiService;
+	private UiService guiService;
 
 	private Bootstrapper() {
 	}
@@ -57,7 +57,7 @@ public class Bootstrapper {
 		// Services
 		employeeService = new EmployeeService(fileRepository, employeeRepository);
 		scheduleService = new ScheduleService(shiftsRepository, employeeRepository);
-		guiService = new GuiService();
+		guiService = new UiService();
 	}
 
 	public static Bootstrapper getBootstrapper() {

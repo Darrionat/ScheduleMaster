@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import me.darrionat.schedulemaster.interfaces.Menu;
-import me.darrionat.schedulemaster.services.GuiService;
+import me.darrionat.schedulemaster.services.UiService;
 import me.darrionat.schedulemaster.ui.events.MenuButtonListener;
 
 /**
@@ -45,17 +45,17 @@ public class MainMenuPanel extends JPanel implements Menu {
 		super.paintComponent(g);
 		this.g = g;
 		setBackground(new Color(0));
-		drawIcon(0.65 * GuiService.width, 0.15 * GuiService.height, 300, 300);
+		drawIcon(0.65 * UiService.width, 0.15 * UiService.height, 300, 300);
 		initButtons();
 		drawButtons();
 	}
 
 	private void initButtons() {
-		double x = 0.05 * GuiService.width;
+		double x = 0.05 * UiService.width;
 		if (buttons.isEmpty())
 			for (int i = 0; i < buttonTexts.length; i++) {
 				String text = buttonTexts[i];
-				buttons.add(new MenuButton(this, text, x, GuiService.height * (0.4 + i * 0.08), 350, 75));
+				buttons.add(new MenuButton(this, text, x, UiService.height * (0.4 + i * 0.08), 350, 75));
 			}
 	}
 

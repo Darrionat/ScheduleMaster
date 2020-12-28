@@ -22,6 +22,23 @@ import me.darrionat.schedulemaster.Employee;
 public class Utils {
 
 	/**
+	 * Constrains an integer into a range
+	 * 
+	 * @param x   the integer being constrained
+	 * @param min minimum value
+	 * @param max maximum value
+	 * @return the integer constrained within the min and max
+	 */
+	public static int constrain(int x, int min, int max) {
+		if (x < min) {
+			x = min;
+		} else if (x > max) {
+			x = max;
+		}
+		return x;
+	}
+
+	/**
 	 * Returns a HashMap that is sorted by the value. This is utilized in order to
 	 * prioritize employees by how often they are available, putting those who have
 	 * the least amount of availability first. HashMap sorting derived from:

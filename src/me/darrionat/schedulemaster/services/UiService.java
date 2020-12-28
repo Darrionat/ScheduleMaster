@@ -14,20 +14,27 @@ import javax.swing.JFrame;
 
 import me.darrionat.schedulemaster.ScheduleMaster;
 import me.darrionat.schedulemaster.interfaces.Menu;
-import me.darrionat.schedulemaster.ui.MainMenuPanel;
 import me.darrionat.schedulemaster.ui.MenuButton;
+import me.darrionat.schedulemaster.ui.TestUi;
+import me.darrionat.schedulemaster.ui.UiContainer;
 import me.darrionat.schedulemaster.ui.events.MenuButtonListener;
 
-public class GuiService extends JFrame {
+public class UiService extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
 	public static int width;
 	public static int height;
 
-	public GuiService() {
+	public UiService() {
 		initUI();
 		setVisible(true);
+	}
+
+	private static UiContainer currentMenu;
+
+	public static UiContainer getContainer() {
+		return currentMenu;
 	}
 
 	private Component mainMenu;
@@ -37,16 +44,22 @@ public class GuiService extends JFrame {
 	public static final Font buttonFont = new Font("Anson", Font.PLAIN, 24);
 
 	private void initUI() {
-		setExtendedState(MAXIMIZED_BOTH);
-		setMinimumSize(new Dimension(600, 500));
+		// setExtendedState(MAXIMIZED_BOTH);
+		setMinimumSize(new Dimension(600, 600));
+
 		ImageIcon icon = new ImageIcon("res/icon.png");
 		setIconImage(icon.getImage());
 		setTitle(ScheduleMaster.NAME);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 
-		mainMenu = new MainMenuPanel();
-		addUI(mainMenu, true);
+		// mainMenu = new MainMenuPanel();
+		// addUI(mainMenu, true);
+		currentMenu = new TestUi(this);
+		add(currentMenu);
+		pack();
+		setVisible(true);
+		currentMenu.setComponents();
 
 		width = getWidth();
 		height = getHeight();
