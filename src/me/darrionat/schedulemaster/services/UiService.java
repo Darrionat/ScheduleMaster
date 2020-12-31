@@ -37,7 +37,6 @@ public class UiService extends JFrame {
 		return currentMenu;
 	}
 
-	private Component mainMenu;
 	/**
 	 * The font used for menu buttons
 	 */

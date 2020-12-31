@@ -1,6 +1,6 @@
 package me.darrionat.schedulemaster.ui.constraints;
 
-import me.darrionat.schedulemaster.ui.componenets.UiComponent;
+import me.darrionat.schedulemaster.ui.components.UiComponent;
 import me.darrionat.schedulemaster.ui.constraints.interfaces.HeightConstraint;
 import me.darrionat.schedulemaster.ui.constraints.interfaces.WidthConstraint;
 import me.darrionat.schedulemaster.ui.constraints.interfaces.XConstraint;
@@ -12,7 +12,7 @@ public class PixelConstraint extends UiConstraints
 	private final int px;
 
 	/**
-	 * Creates a Constraint object that constrains x, y, width, and height to the
+	 * Initializes a UiConstraints object that sets x, y, width, or height to the
 	 * defined value
 	 * 
 	 * @param pixels the amount of pixels to constrain by

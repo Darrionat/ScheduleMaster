@@ -1,7 +1,7 @@
 package me.darrionat.schedulemaster.ui.constraints;
 
 import me.darrionat.schedulemaster.services.UiService;
-import me.darrionat.schedulemaster.ui.componenets.UiComponent;
+import me.darrionat.schedulemaster.ui.components.UiComponent;
 import me.darrionat.schedulemaster.ui.constraints.interfaces.HeightConstraint;
 import me.darrionat.schedulemaster.ui.constraints.interfaces.WidthConstraint;
 import me.darrionat.schedulemaster.ui.constraints.interfaces.XConstraint;
@@ -13,8 +13,8 @@ public class RelativeConstraint extends UiConstraints
 	private final float ratio;
 
 	/**
-	 * Creates a Constraint object that sets the x, y, width, or height to a ratio
-	 * of the screen
+	 * Initializes a UiConstraints object that sets the x, y, width, or height to a
+	 * ratio of the screen
 	 * 
 	 * @param ratio percentage of the screen to occupy; should be between 0f and 1f
 	 */

@@ -1,28 +1,21 @@
 package me.darrionat.schedulemaster.ui.constraints;
 
-import me.darrionat.schedulemaster.ui.componenets.UiComponent;
+import me.darrionat.schedulemaster.ui.components.UiComponent;
 import me.darrionat.schedulemaster.ui.constraints.interfaces.HeightConstraint;
 import me.darrionat.schedulemaster.ui.constraints.interfaces.WidthConstraint;
-import me.darrionat.schedulemaster.ui.constraints.interfaces.XConstraint;
-import me.darrionat.schedulemaster.ui.constraints.interfaces.YConstraint;
 
-public class AspectConstraint extends UiConstraints
-		implements XConstraint, YConstraint, WidthConstraint, HeightConstraint {
+public class AspectConstraint extends UiConstraints implements WidthConstraint, HeightConstraint {
 
 	private final double ratio;
 
+	/**
+	 * Initializes a UiConstraints object that defines the aspect ratio of a
+	 * UiComponent
+	 * 
+	 * @param aspectRatio the aspect ratio to define using the ratio width:height
+	 */
 	public AspectConstraint(double aspectRatio) {
 		this.ratio = aspectRatio;
-	}
-
-	@Override
-	public int getX(UiComponent component) {
-		return (int) (component.getY() * ratio);
-	}
-
-	@Override
-	public int getY(UiComponent component) {
-		return (int) (component.getX() / ratio);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
-package me.darrionat.schedulemaster.ui.componenets;
+package me.darrionat.schedulemaster.ui.components;
 
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
@@ -13,11 +14,9 @@ public class UiBlock extends UiComponent {
 	}
 
 	@Override
-	public void draw(Graphics2D g2d) {
+	public void draw(Graphics g) {
+		Graphics2D g2d = (Graphics2D) g;
 		Rectangle2D rect = new Rectangle2D.Double(getX(), getY(), getWidth(), getHeight());
-
-		System.out.println(getY());
-		System.out.println(getHeight());
 		g2d.setColor(uiColor.getColor());
 		g2d.fill(rect);
 		g2d.draw(rect);

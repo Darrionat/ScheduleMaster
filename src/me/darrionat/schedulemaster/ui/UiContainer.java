@@ -9,20 +9,28 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import me.darrionat.schedulemaster.services.UiService;
-import me.darrionat.schedulemaster.ui.componenets.UiComponent;
+import me.darrionat.schedulemaster.ui.components.UiComponent;
 import me.darrionat.schedulemaster.ui.constraints.UiConstraints;
 
 public abstract class UiContainer extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Parent frame
+	 */
 	protected JFrame frame;
+
+	/**
+	 * All components within the UiContainer
+	 */
 	private List<UiComponent> components = new ArrayList<UiComponent>();
 
-	public List<UiComponent> getComponenets() {
-		return components;
-	}
-
+	/**
+	 * Parent frame that the UiContainer is within
+	 * 
+	 * @param frame the JFrame object that the UiContainer is within
+	 */
 	public UiContainer(JFrame frame) {
 		this.frame = frame;
 	}
@@ -39,10 +47,31 @@ public abstract class UiContainer extends JPanel {
 		}
 	}
 
+	/**
+	 * Sets the components of the UiContainer
+	 */
+	public abstract void setComponents();
+
+	/**
+	 * Adds a component to the UiContainer, putting it on the display when
+	 * {@link #repaint()} is ran
+	 * 
+	 * @param component   the component to add
+	 * @param constraints the constraints to set on the component to determine
+	 *                    dimensions
+	 */
 	public void add(UiComponent component, UiConstraints constraints) {
 		component.setConstraints(constraints);
 		components.add(component);
 	}
 
-	public abstract void setComponents();
+	/**
+	 * Gets all components of this UiContainer
+	 * 
+	 * @return gets all UiComponent objects; first indexed are drawn first, making
+	 *         the last indexed objects the ones on the top layer
+	 */
+	public List<UiComponent> getComponenets() {
+		return components;
+	}
 }
