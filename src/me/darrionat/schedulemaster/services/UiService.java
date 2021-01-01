@@ -94,6 +94,7 @@ public class UiService extends JFrame {
 	 * @param g    The Graphics instance.
 	 * @param text The String to draw.
 	 * @param rect The Rectangle to center the text in.
+	 * @param font The Font to draw the text as
 	 */
 	public static void drawLeftAlignedString(Graphics g, String text, Rectangle2D rect, Font font) {
 		FontMetrics metrics = g.getFontMetrics(font);
@@ -111,6 +112,7 @@ public class UiService extends JFrame {
 	 * @param g    The Graphics instance.
 	 * @param text The String to draw.
 	 * @param rect The Rectangle to center the text in.
+	 * @param font The Font to draw the text as
 	 */
 	public static void drawCenteredString(Graphics g, String text, Rectangle2D rect, Font font) {
 		FontMetrics metrics = g.getFontMetrics(font);

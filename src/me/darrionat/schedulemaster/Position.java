@@ -58,7 +58,10 @@ public class Position {
 	}
 
 	/**
-	 * @return a String including the wage associated with the position
+	 * Creates a String from a Position
+	 * 
+	 * @param wage the wage of the Position to be included within the String
+	 * @return returns a String including the wage associated with the position
 	 */
 	public String toString(double wage) {
 		return toString() + SEP + wage;

@@ -6,7 +6,7 @@ public interface YConstraint {
 	/**
 	 * Calculates the Y coordinate of a UiComponent
 	 * 
-	 * @param uiComponent the UiComponent to calculate the Y value of
+	 * @param component the UiComponent to calculate the Y value of
 	 * @return returns the Y coordinate of the UiComponent utilizing the
 	 *         constraint's method
 	 */

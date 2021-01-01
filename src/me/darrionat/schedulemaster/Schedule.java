@@ -35,14 +35,17 @@ public class Schedule {
 	 * 
 	 * @param shift    the shift key being inserted
 	 * @param employee the employee value being inserted
-	 * @return
+	 * @return returns the Employee object, or null if the Shift did not exist
+	 *         within the Schedule
 	 */
 	public Employee addShift(Shift shift, Employee employee) {
 		return table.put(shift, employee);
 	}
 
 	/**
-	 * Returns if the schedule has an employee listed more than once.
+	 * Returns if the schedule has an employee listed more than once
+	 * 
+	 * @return returns if the schedule has an employee listed twice on the schedule
 	 */
 	public boolean hasDuplicateEmployee() {
 		Set<Employee> set = new HashSet<>();

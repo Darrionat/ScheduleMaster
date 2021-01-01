@@ -42,6 +42,6 @@ public class TestUi extends UiContainer {
 		constraints2.setY(new RelativeConstraint(0.1f));
 		constraints2.setWidth(new PixelConstraint(250));
 		constraints2.setHeight(new AspectConstraint(1));
-		//display.add(image, constraints2);
+		display.add(image, constraints2);
 	}
 }

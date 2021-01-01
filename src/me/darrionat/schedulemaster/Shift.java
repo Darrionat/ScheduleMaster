@@ -89,6 +89,10 @@ public class Shift {
 	/**
 	 * Converts the Shift object into a String. The string will change depending on
 	 * if the Position is defined.
+	 * 
+	 * @param includePosition {@code true} if to include the position within the
+	 *                        String, {@code false} otherwise
+	 * @return a Shift object converted to a String
 	 */
 	public String toString(boolean includePosition) {
 		String s = String.valueOf(start) + SEP + String.valueOf(end) + SEP + id;
@@ -140,7 +144,9 @@ public class Shift {
 	 * Converts a list of Shift objects into a String object. Utilized to save the
 	 * available shifts to an employee's file.
 	 * 
-	 * @param shifts the list of shifts to convert into a String
+	 * @param shifts          the list of shifts to convert into a String
+	 * @param includePosition {@code true} if to include the position within the
+	 *                        String, {@code false} otherwise
 	 * @return the list converted into a string
 	 */
 	public static String getStringFromList(List<Shift> shifts, boolean includePosition) {

@@ -118,15 +118,13 @@ public class MenuButton {
 	/**
 	 * Creates a MenuButton object. The button contains a text field and a rectangle
 	 * 
-	 * @param panel the panel in which the button is contained in
-	 * @param g     the graphics object which is utilized to customize the
-	 *              appearance of the shape and text
-	 * @param s     the text which will appear within the rectangle. Make this null
-	 *              if no text is desired
-	 * @param x     X coordinate on the screen
-	 * @param y     Y coordinate on the screen
-	 * @param w     Width of the rectangle
-	 * @param h     Height of the rectangle
+	 * @param menu the Menu of which the MenuButton is located within
+	 * @param s    the text which will appear within the rectangle. Make this null
+	 *             if no text is desired
+	 * @param x    X coordinate on the screen
+	 * @param y    Y coordinate on the screen
+	 * @param w    Width of the rectangle
+	 * @param h    Height of the rectangle
 	 */
 	public MenuButton(Menu menu, String s, double x, double y, int w, int h) {
 		this.menu = menu;

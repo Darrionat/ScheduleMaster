@@ -53,7 +53,7 @@ public abstract class UiComponent {
 	 * component {@link #add(UiComponent, UiConstraints)} or by adding this
 	 * component to a UiContainer object
 	 * 
-	 * @param color
+	 * @param color the set UiColor of the newly created UiComponent object
 	 */
 	public UiComponent(UiColor color) {
 		this.uiColor = color;

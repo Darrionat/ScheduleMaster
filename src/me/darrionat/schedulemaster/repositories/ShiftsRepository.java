@@ -59,7 +59,6 @@ public class ShiftsRepository {
 	 * 
 	 * @param shift the time period and position that is required
 	 * @return the success of addition of the shift
-	 * @throws Exception when a shift is not contained in one weekday
 	 */
 	public boolean addRequiredShift(Shift shift) {
 		if (!isInOneDay(shift)) {

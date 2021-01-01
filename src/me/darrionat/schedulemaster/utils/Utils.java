@@ -27,7 +27,7 @@ public class Utils {
 	 * @param x   the integer being constrained
 	 * @param min minimum value
 	 * @param max maximum value
-	 * @return the integer constrained within the min and max
+	 * @return the integer constrained within the minimum and maximum value
 	 */
 	public static int constrain(int x, int min, int max) {
 		if (x < min) {
@@ -68,7 +68,11 @@ public class Utils {
 	}
 
 	/**
-	 * @return if an array contains a defined value
+	 * Searches an array and indicates if that array contains a particular value
+	 * 
+	 * @param arr   the array to search through
+	 * @param value the value that is being searched for
+	 * @return returns if an array contains a defined value
 	 */
 	public static boolean arrayContainsValue(Object[] arr, Object value) {
 		for (Object object : arr) {
