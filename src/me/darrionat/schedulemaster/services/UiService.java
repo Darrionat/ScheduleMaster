@@ -15,7 +15,7 @@ import javax.swing.JFrame;
 import me.darrionat.schedulemaster.ScheduleMaster;
 import me.darrionat.schedulemaster.interfaces.Menu;
 import me.darrionat.schedulemaster.ui.MenuButton;
-import me.darrionat.schedulemaster.ui.TestUi;
+import me.darrionat.schedulemaster.ui.MainMenuUi;
 import me.darrionat.schedulemaster.ui.UiContainer;
 import me.darrionat.schedulemaster.ui.events.MenuButtonListener;
 
@@ -54,7 +54,7 @@ public class UiService extends JFrame {
 
 		// mainMenu = new MainMenuPanel();
 		// addUI(mainMenu, true);
-		currentMenu = new TestUi(this);
+		currentMenu = new MainMenuUi(this);
 		add(currentMenu);
 		pack();
 		setVisible(true);
