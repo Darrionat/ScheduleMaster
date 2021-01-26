@@ -54,9 +54,6 @@ public class UiText extends UiComponent {
 	protected void draw(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setColor(uiColor.getColor());
-		// FontMetrics metrics = g.getFontMetrics(font);
-//		int x = (int) (rect.getX() + rect.getWidth() / 20);
-//		int y = (int) (rect.getY() + ((rect.getHeight() - metrics.getHeight()) / 2) + metrics.getAscent());
 		g.setFont(font);
 		g.drawString(text, getX(), getY());
 	}
