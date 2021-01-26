@@ -6,6 +6,7 @@ import me.darrionat.schedulemaster.services.UiService;
 import me.darrionat.schedulemaster.ui.components.UiBlock;
 import me.darrionat.schedulemaster.ui.components.UiColors;
 import me.darrionat.schedulemaster.ui.components.UiComponent;
+import me.darrionat.schedulemaster.ui.components.UiText;
 import me.darrionat.schedulemaster.ui.constraints.AspectConstraint;
 import me.darrionat.schedulemaster.ui.constraints.PixelConstraint;
 import me.darrionat.schedulemaster.ui.constraints.RelativeConstraint;
@@ -21,6 +22,8 @@ public class MainMenuUi extends UiContainer {
 		super(frame);
 	}
 
+	// TODO: Finish MainMenuUi
+	// Currently all testing lines
 	@Override
 	public void setComponents() {
 		UiContainer display = UiService.getContainer();
@@ -35,5 +38,12 @@ public class MainMenuUi extends UiContainer {
 			// String text = buttonTexts[i];
 			display.add(rect, buttonConstraints);
 		}
+		UiComponent textComponent = new UiText("test");
+		UiConstraints textConstraints = new UiConstraints();
+		textConstraints.setX(new PixelConstraint(30));
+		textConstraints.setY(new PixelConstraint(50));
+		textConstraints.setWidth(new PixelConstraint(30));
+		textConstraints.setHeight(new PixelConstraint(50));
+		display.add(textComponent, textConstraints);
 	}
 }

@@ -44,7 +44,6 @@ public abstract class UiComponent {
 	 */
 	public UiComponent() {
 		this.uiColor = UiColors.BLACK;
-
 	}
 
 	/**
