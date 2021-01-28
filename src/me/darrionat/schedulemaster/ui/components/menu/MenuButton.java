@@ -82,7 +82,7 @@ public class MenuButton extends UiComponent {
 	protected void draw(Graphics g) {
 		rect.setConstraints(constraints);
 		text.setConstraints(new UiConstraints());
-		text.boundXToComponent(rect, g, horzAlignment);
-		text.boundYToComponent(rect, g, vertAlignment);
+		text.boundToComponent(rect, horzAlignment);
+		text.boundToComponent(rect, vertAlignment);
 	}
 }

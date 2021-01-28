@@ -22,6 +22,18 @@ public class UiText extends UiComponent {
 	private Font font;
 
 	/**
+	 * Defines what and where the UiText is bounded to for X values
+	 */
+	private UiComponent horzboundedComponent;
+	private HorizontalAlignment horzAlignment;
+
+	/**
+	 * Defines what and where the UiText is bounded to for Y values
+	 */
+	private UiComponent vertBoundedComponent;
+	private VerticalAlignment vertAlignment;
+
+	/**
 	 * Creates a UiText object that contains the given text
 	 * 
 	 * @param text the text for the UiText object to display
@@ -114,39 +126,119 @@ public class UiText extends UiComponent {
 		return metrics.getStringBounds(getText(), 0, getText().length(), g);
 	}
 
-	public void boundXToComponent(UiComponent component, Graphics g, HorizontalAlignment horzAlignment) {
+	/**
+	 * Aligns the UiText to the defined component and horizontally aligns it
+	 * 
+	 * @param component the component to be aligned with
+	 * @param alignment how to align the text
+	 */
+	public void boundToComponent(UiComponent component, HorizontalAlignment alignment) {
+		horzboundedComponent = component;
+		horzAlignment = alignment;
+	}
+
+	/**
+	 * Aligns the UiText to the defined component and vertically aligns it
+	 * 
+	 * @param component the component to be aligned with
+	 * @param alignment how to align the text
+	 */
+	public void boundToComponent(UiComponent component, VerticalAlignment alignment) {
+		vertBoundedComponent = component;
+		vertAlignment = alignment;
+	}
+
+	/**
+	 * Removes any horizontal alignment that the UiText has. This will not affect
+	 * the XConstraint, it will just stop any further changing of the XConstraint
+	 * itself.
+	 */
+	public void unboundHorizontal() {
+		horzboundedComponent = null;
+		horzAlignment = null;
+	}
+
+	/**
+	 * Removes any horizontal alignment that the UiText has. This will not affect
+	 * the YConstraint, it will just stop any further changing of the YConstraint
+	 * itself.
+	 */
+	public void unboundVertical() {
+		vertBoundedComponent = null;
+		vertAlignment = null;
+	}
+
+	/**
+	 * Checks to see if the text is currently horizontally aligned to any
+	 * UiComponent
+	 * 
+	 * If at any time the UiComponent that the UiText is bounded to is removed, it
+	 * will no longer change its XConstraint, and should be correctly unbounded with
+	 * {@link #unboundHorizontal()}.
+	 * 
+	 * @return returns {@code true} if the text is horizontally aligned
+	 */
+	public boolean isHorizontallyAligned() {
+		return horzboundedComponent != null && horzAlignment != null;
+	}
+
+	/**
+	 * Checks to see if the text is currently vertically aligned to any UiComponent
+	 * 
+	 * If at any time the UiComponent that the UiText is bounded to is removed, it
+	 * will no longer change its YConstraint, and should be unbounded with
+	 * {@link #unboundVertical()}.
+	 * 
+	 * @return returns {@code true} if the text is vertically aligned
+	 */
+	public boolean isVerticallyAligned() {
+		return vertBoundedComponent != null && vertAlignment != null;
+	}
+
+	/**
+	 * Horizontally aligns the text based on the defined alignment
+	 * 
+	 * @param g the specified graphic context
+	 */
+	private void boundXToComponent(Graphics g) {
 		Rectangle2D bounds = getBoundingBox(g);
 
 		int x = 0;
 		switch (horzAlignment) {
 		case LEFT:
-			x = (int) (component.getX() + component.getWidth() / 20);
+			x = (int) (horzboundedComponent.getX() + horzboundedComponent.getWidth() / 20);
 			break;
 		case CENTER:
-			x = (int) (component.getX() + component.getWidth() / 2 - bounds.getWidth() / 2);
+			x = (int) (horzboundedComponent.getX() + horzboundedComponent.getWidth() / 2 - bounds.getWidth() / 2);
 			break;
 		case RIGHT:
-			x = (int) (component.getX() + component.getWidth() - component.getWidth() / 20 - bounds.getWidth());
+			x = (int) (horzboundedComponent.getX() + horzboundedComponent.getWidth()
+					- horzboundedComponent.getWidth() / 20 - bounds.getWidth());
 			break;
 		}
 		constraints.setX(new PixelConstraint(x));
 	}
 
-	public void boundYToComponent(UiComponent component, Graphics g, VerticalAlignment vertAlignment) {
+	/**
+	 * Vertically aligns the text based on the defined alignment
+	 * 
+	 * @param g the specified graphic context
+	 */
+	private void boundYToComponent(Graphics g) {
 		Rectangle2D bounds = getBoundingBox(g);
 
 		int y = 0;
 		switch (vertAlignment) {
 		case TOP:
-			y = (int) (component.getY() + bounds.getHeight() + getFontMetrics(g).getAscent());
+			y = (int) (vertBoundedComponent.getY() + bounds.getHeight() + getFontMetrics(g).getAscent());
 			break;
 		case CENTER:
-			y = (int) (component.getY() + ((component.getHeight() - bounds.getHeight()) / 2)
+			y = (int) (vertBoundedComponent.getY() + ((vertBoundedComponent.getHeight() - bounds.getHeight()) / 2)
 					+ getFontMetrics(g).getAscent());
 			break;
 		case BOTTOM:
-			y = (int) (component.getY() + component.getHeight() - component.getHeight() / 20 - bounds.getHeight()
-					+ getFontMetrics(g).getAscent());
+			y = (int) (vertBoundedComponent.getY() + vertBoundedComponent.getHeight()
+					- vertBoundedComponent.getHeight() / 20 - bounds.getHeight() + getFontMetrics(g).getAscent());
 			break;
 		}
 		constraints.setY(new PixelConstraint(y));
@@ -157,6 +249,13 @@ public class UiText extends UiComponent {
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setColor(uiColor.getColor());
 		g.setFont(font);
+
+		if (isHorizontallyAligned()) {
+			boundXToComponent(g);
+		}
+		if (isVerticallyAligned()) {
+			boundYToComponent(g);
+		}
 		g.drawString(text, getX(), getY());
 	}
 }
