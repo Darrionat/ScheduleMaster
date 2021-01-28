@@ -6,6 +6,8 @@ import java.awt.RenderingHints;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.darrionat.schedulemaster.ui.UiColor;
+import me.darrionat.schedulemaster.ui.UiColors;
 import me.darrionat.schedulemaster.ui.constraints.UiConstraints;
 
 /**
@@ -24,7 +26,7 @@ public abstract class UiComponent {
 	/**
 	 * Color of this object; defaulted to Black
 	 */
-	public UiColor uiColor;
+	protected UiColor uiColor;
 
 	/**
 	 * Constraints defined for this object
@@ -47,14 +49,20 @@ public abstract class UiComponent {
 	}
 
 	/**
-	 * Creates a UiComponent object without dimensions or constraints, but does
-	 * define color. Add constraints by making this a subcomponent of another
-	 * component {@link #add(UiComponent, UiConstraints)} or by adding this
-	 * component to a UiContainer object
+	 * Gets the current color of this UiComponent
 	 * 
-	 * @param color the set UiColor of the newly created UiComponent object
+	 * @return returns the current UiColor object within this object
 	 */
-	public UiComponent(UiColor color) {
+	public UiColor getUiColor() {
+		return uiColor;
+	}
+
+	/**
+	 * Changes the set UiColor of this object
+	 * 
+	 * @param color the new color to set the UiComponent to
+	 */
+	public void setUiColor(UiColor color) {
 		this.uiColor = color;
 	}
 

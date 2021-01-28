@@ -7,10 +7,7 @@ import java.awt.geom.Ellipse2D;
 public class UiEllipse extends UiComponent {
 
 	public UiEllipse() {
-	}
-
-	public UiEllipse(UiColor color) {
-		super(color);
+		super();
 	}
 
 	@Override

@@ -4,6 +4,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import me.darrionat.schedulemaster.ui.UiColor;
+
 public class UiText extends UiComponent {
 
 	/**
@@ -22,6 +24,7 @@ public class UiText extends UiComponent {
 	 * @param text the text for the UiText object to display
 	 */
 	public UiText(String text) {
+		super();
 		this.text = text;
 		font = new Font("Arial", Font.PLAIN, 11);
 	}

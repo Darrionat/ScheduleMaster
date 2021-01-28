@@ -1,4 +1,4 @@
-package me.darrionat.schedulemaster.ui.components;
+package me.darrionat.schedulemaster.ui;
 
 import java.awt.Color;
 

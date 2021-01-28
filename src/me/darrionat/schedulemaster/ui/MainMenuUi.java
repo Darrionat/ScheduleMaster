@@ -4,7 +4,6 @@ import javax.swing.JFrame;
 
 import me.darrionat.schedulemaster.services.UiService;
 import me.darrionat.schedulemaster.ui.components.UiBlock;
-import me.darrionat.schedulemaster.ui.components.UiColors;
 import me.darrionat.schedulemaster.ui.components.UiComponent;
 import me.darrionat.schedulemaster.ui.components.UiText;
 import me.darrionat.schedulemaster.ui.constraints.AspectConstraint;
@@ -29,7 +28,9 @@ public class MainMenuUi extends UiContainer {
 		UiContainer display = UiService.getContainer();
 
 		for (int i = 0; i < buttonTexts.length; i++) {
-			UiComponent rect = new UiBlock(UiColors.DARK_GREY);
+			UiComponent rect = new UiBlock();
+			rect.setUiColor(UiColors.DARK_GREY);
+
 			UiConstraints buttonConstraints = new UiConstraints();
 			buttonConstraints.setX(new RelativeConstraint(0.05f));
 			buttonConstraints.setY(new RelativeConstraint((float) (0.4 + i * 0.08)));

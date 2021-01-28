@@ -7,10 +7,7 @@ import java.awt.geom.Rectangle2D;
 public class UiBlock extends UiComponent {
 
 	public UiBlock() {
-	}
-
-	public UiBlock(UiColor color) {
-		super(color);
+		super();
 	}
 
 	@Override

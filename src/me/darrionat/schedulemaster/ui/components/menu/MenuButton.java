@@ -2,6 +2,7 @@ package me.darrionat.schedulemaster.ui.components.menu;
 
 import java.awt.Graphics;
 
+import me.darrionat.schedulemaster.ui.UiColor;
 import me.darrionat.schedulemaster.ui.components.UiBlock;
 import me.darrionat.schedulemaster.ui.components.UiComponent;
 import me.darrionat.schedulemaster.ui.components.UiText;
@@ -12,35 +13,23 @@ public class MenuButton extends UiComponent {
 
 	private UiBlock rect;
 	private UiText text;
-	private HorizontalAlignment horzAlignment;
-	private VerticalAlignment vertAlignment;
+	private HorizontalAlignment horzAlignment = HorizontalAlignment.LEFT;
+	private VerticalAlignment vertAlignment = VerticalAlignment.CENTER;
 
 	/**
 	 * Creates a new MenuButton. A MenuButton contains both a UiBlock and a UiText
-	 * object. Neither object should already have predefined constraints because
-	 * they will be cleared to fit the constraints of the MenuButton.
+	 * object and they are both created based upon the UiConstraints that the
+	 * MenuButton has.
 	 * 
-	 * @param rect          the UiBlock that will be displayed based on the
-	 *                      MenuButton's constraints
-	 * @param text          the UiText that will be displayed based on the
-	 *                      MenuButton's constraints
-	 * @param horzAlignment determines where the text is located relative to the
-	 *                      UiBlock on the x axis, defaults to left side alignment
-	 * @param vertAlignment determines where the text is located relative to the
-	 *                      UiBlock on the y axis, defaults to center alignment
-	 * 
+	 * @param text the String that will be displayed based on the MenuButton's
+	 *             constraints
 	 */
-	public MenuButton(UiBlock rect, UiText text, HorizontalAlignment horzAlignment, VerticalAlignment vertAlignment) {
-		this.rect = rect;
-		this.text = text;
-		this.horzAlignment = horzAlignment;
-		this.vertAlignment = vertAlignment;
+	public MenuButton(String displayedText) {
+		super();
 
-		if (horzAlignment == null)
-			this.horzAlignment = HorizontalAlignment.LEFT;
-
-		if (vertAlignment == null)
-			this.vertAlignment = VerticalAlignment.CENTER;
+		rect = new UiBlock();
+		rect.setUiColor(this.uiColor);
+		text = new UiText(displayedText);
 
 		/*
 		 * Adds the rectangle and text as subcomponents. Order does matter for the
@@ -50,12 +39,28 @@ public class MenuButton extends UiComponent {
 		add(text, null);
 	}
 
-	public HorizontalAlignment getAlignment() {
+	public HorizontalAlignment getHorizontalAlignment() {
 		return horzAlignment;
 	}
 
 	public void setAlignment(HorizontalAlignment alignment) {
 		this.horzAlignment = alignment;
+	}
+
+	public VerticalAlignment getVerticalAlignment() {
+		return vertAlignment;
+	}
+
+	public void setAlignment(VerticalAlignment alignment) {
+		this.vertAlignment = alignment;
+	}
+
+	public UiColor getTextColor() {
+		return text.getUiColor();
+	}
+
+	public void setTextColor(UiColor color) {
+		text.setUiColor(color);
 	}
 
 	/**
@@ -67,11 +72,10 @@ public class MenuButton extends UiComponent {
 	protected void draw(Graphics g) {
 		rect.setConstraints(constraints);
 
-		
 		// text.setConstraints(constraints);
 		// add(text, textConstraints);
 	}
-	
+
 	private void setTextX() {
 		switch (horzAlignment) {
 		case LEFT:
@@ -86,8 +90,8 @@ public class MenuButton extends UiComponent {
 			break;
 		}
 	}
-	
+
 	private void setTextY() {
-		
+
 	}
 }
