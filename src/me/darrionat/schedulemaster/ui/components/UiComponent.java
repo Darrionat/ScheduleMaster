@@ -105,7 +105,7 @@ public abstract class UiComponent {
 	 * @param constraints the constraints to add to the subcomponent
 	 */
 	public void add(UiComponent component, UiConstraints constraints) {
-		this.constraints = constraints;
+		component.setConstraints(constraints);
 		components.add(component);
 	}
 
@@ -154,7 +154,7 @@ public abstract class UiComponent {
 	/**
 	 * Draws the component on the graphics passed through the method
 	 * 
-	 * @param g2D graphics to utilize for drawing on
+	 * @param g graphics to utilize for drawing on
 	 */
 	protected abstract void draw(Graphics g);
 }

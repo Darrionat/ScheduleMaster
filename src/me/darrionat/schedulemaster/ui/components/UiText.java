@@ -6,7 +6,13 @@ import java.awt.Graphics2D;
 
 public class UiText extends UiComponent {
 
+	/**
+	 * The displayed text
+	 */
 	private String text;
+	/**
+	 * The text's font; defaulted to Arial size 11
+	 */
 	private Font font;
 
 	/**
@@ -38,7 +44,11 @@ public class UiText extends UiComponent {
 	 * @param s a String to set the text to
 	 */
 	public void setText(String s) {
-		this.text = s;
+		text = s;
+	}
+
+	public String getText() {
+		return text;
 	}
 
 	/**
@@ -47,7 +57,11 @@ public class UiText extends UiComponent {
 	 * @param font the font to change the text to
 	 */
 	public void setFont(Font f) {
-		this.font = f;
+		font = f;
+	}
+
+	public Font getFont() {
+		return font;
 	}
 
 	@Override

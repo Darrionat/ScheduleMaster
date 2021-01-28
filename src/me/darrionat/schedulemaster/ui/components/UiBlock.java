@@ -14,7 +14,7 @@ public class UiBlock extends UiComponent {
 	}
 
 	@Override
-	public void draw(Graphics g) {
+	protected void draw(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 		Rectangle2D rect = new Rectangle2D.Double(getX(), getY(), getWidth(), getHeight());
 		g2d.setColor(uiColor.getColor());
