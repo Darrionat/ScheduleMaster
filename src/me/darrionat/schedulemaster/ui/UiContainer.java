@@ -54,6 +54,19 @@ public abstract class UiContainer extends JPanel {
 
 	/**
 	 * Adds a component to the UiContainer, putting it on the display when
+	 * {@link #repaint()} is ran, only if there are constraints that are defined
+	 * before it is attempted to be displayed. A component cannot be displayed
+	 * without constraints.
+	 * 
+	 * @param component the component to add
+	 * @see #add(UiComponent, UiConstraints)
+	 */
+	public void add(UiComponent component) {
+		components.add(component);
+	}
+
+	/**
+	 * Adds a component to the UiContainer, putting it on the display when
 	 * {@link #repaint()} is ran
 	 * 
 	 * @param component   the component to add

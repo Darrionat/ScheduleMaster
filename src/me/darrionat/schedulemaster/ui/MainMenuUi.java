@@ -3,11 +3,8 @@ package me.darrionat.schedulemaster.ui;
 import javax.swing.JFrame;
 
 import me.darrionat.schedulemaster.services.UiService;
-import me.darrionat.schedulemaster.ui.components.UiBlock;
-import me.darrionat.schedulemaster.ui.components.UiComponent;
-import me.darrionat.schedulemaster.ui.components.UiText;
+import me.darrionat.schedulemaster.ui.components.menu.MenuButton;
 import me.darrionat.schedulemaster.ui.constraints.AspectConstraint;
-import me.darrionat.schedulemaster.ui.constraints.PixelConstraint;
 import me.darrionat.schedulemaster.ui.constraints.RelativeConstraint;
 import me.darrionat.schedulemaster.ui.constraints.UiConstraints;
 
@@ -26,10 +23,23 @@ public class MainMenuUi extends UiContainer {
 	@Override
 	public void setComponents() {
 		UiContainer display = UiService.getContainer();
+//		MenuButton menuButton = new MenuButton("Displayed Text");
+//		menuButton.setTextColor(UiColors.WHITE);
+//		menuButton.setAlignment(HorizontalAlignment.CENTER);
+//		menuButton.setAlignment(VerticalAlignment.CENTER);
+//
+//		UiConstraints buttonConstraints = new UiConstraints();
+//		buttonConstraints.setX(new RelativeConstraint(0.05f));
+//		buttonConstraints.setY(new RelativeConstraint((float) (0.4 + 0.08)));
+//		buttonConstraints.setWidth(new RelativeConstraint(0.25f));
+//		buttonConstraints.setHeight(new AspectConstraint(1));
+//
+//		display.add(menuButton, buttonConstraints);
 
 		for (int i = 0; i < buttonTexts.length; i++) {
-			UiComponent rect = new UiBlock();
-			rect.setUiColor(UiColors.DARK_GREY);
+			MenuButton menuButton = new MenuButton(buttonTexts[i]);
+			menuButton.setUiColor(UiColors.DARK_GREY);
+			menuButton.setTextColor(UiColors.WHITE);
 
 			UiConstraints buttonConstraints = new UiConstraints();
 			buttonConstraints.setX(new RelativeConstraint(0.05f));
@@ -37,14 +47,7 @@ public class MainMenuUi extends UiContainer {
 			buttonConstraints.setWidth(new RelativeConstraint(0.18f));
 			buttonConstraints.setHeight(new AspectConstraint(4.667));
 			// String text = buttonTexts[i];
-			display.add(rect, buttonConstraints);
+			display.add(menuButton, buttonConstraints);
 		}
-		UiComponent textComponent = new UiText("test");
-		UiConstraints textConstraints = new UiConstraints();
-		textConstraints.setX(new PixelConstraint(30));
-		textConstraints.setY(new PixelConstraint(50));
-		textConstraints.setWidth(new PixelConstraint(30));
-		textConstraints.setHeight(new PixelConstraint(50));
-		display.add(textComponent, textConstraints);
 	}
 }

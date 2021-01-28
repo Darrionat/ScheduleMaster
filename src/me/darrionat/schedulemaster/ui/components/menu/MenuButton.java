@@ -1,5 +1,6 @@
 package me.darrionat.schedulemaster.ui.components.menu;
 
+import java.awt.Font;
 import java.awt.Graphics;
 
 import me.darrionat.schedulemaster.ui.UiColor;
@@ -8,6 +9,7 @@ import me.darrionat.schedulemaster.ui.components.UiComponent;
 import me.darrionat.schedulemaster.ui.components.UiText;
 import me.darrionat.schedulemaster.ui.components.enums.HorizontalAlignment;
 import me.darrionat.schedulemaster.ui.components.enums.VerticalAlignment;
+import me.darrionat.schedulemaster.ui.constraints.UiConstraints;
 
 public class MenuButton extends UiComponent {
 
@@ -43,12 +45,12 @@ public class MenuButton extends UiComponent {
 		return horzAlignment;
 	}
 
-	public void setAlignment(HorizontalAlignment alignment) {
-		this.horzAlignment = alignment;
-	}
-
 	public VerticalAlignment getVerticalAlignment() {
 		return vertAlignment;
+	}
+
+	public void setAlignment(HorizontalAlignment alignment) {
+		this.horzAlignment = alignment;
 	}
 
 	public void setAlignment(VerticalAlignment alignment) {
@@ -63,6 +65,14 @@ public class MenuButton extends UiComponent {
 		text.setUiColor(color);
 	}
 
+	public Font getTextFont() {
+		return text.getFont();
+	}
+
+	public void setTextFont(Font f) {
+		text.setFont(f);
+	}
+
 	/**
 	 * Sets the constraints of both the UiBlock and the UiText contained within the
 	 * MenuButton. Afterwards, they are added as subcomponents to MenuButton and
@@ -71,27 +81,8 @@ public class MenuButton extends UiComponent {
 	@Override
 	protected void draw(Graphics g) {
 		rect.setConstraints(constraints);
-
-		// text.setConstraints(constraints);
-		// add(text, textConstraints);
-	}
-
-	private void setTextX() {
-		switch (horzAlignment) {
-		case LEFT:
-
-			break;
-
-		case CENTER:
-			break;
-
-		case RIGHT:
-
-			break;
-		}
-	}
-
-	private void setTextY() {
-
+		text.setConstraints(new UiConstraints());
+		text.boundXToComponent(rect, g, horzAlignment);
+		text.boundYToComponent(rect, g, vertAlignment);
 	}
 }
