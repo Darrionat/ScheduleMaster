@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 
 import me.darrionat.schedulemaster.ScheduleMaster;
+import me.darrionat.schedulemaster.listeners.UiButtonHover;
 import me.darrionat.schedulemaster.repositories.EmployeeRepository;
 import me.darrionat.schedulemaster.repositories.FileRepository;
 import me.darrionat.schedulemaster.repositories.PositionRepository;
@@ -60,8 +61,9 @@ public class Bootstrapper {
 		employeeService = new EmployeeService(fileRepository, employeeRepository);
 		scheduleService = new ScheduleService(shiftsRepository, employeeRepository);
 
+		new UiButtonHover();
 		guiService = new UiService();
-		guiService.setCurrentUiContainer(new MainMenuUi(guiService));
+		guiService.setCurrentContainer(new MainMenuUi(guiService));
 	}
 
 	public static Bootstrapper getBootstrapper() {

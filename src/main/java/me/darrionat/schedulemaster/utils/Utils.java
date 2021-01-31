@@ -1,6 +1,5 @@
 package me.darrionat.schedulemaster.utils;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -100,54 +99,5 @@ public class Utils {
 			newArr[i] = temp.get(i);
 		}
 		return newArr;
-	}
-
-	/**
-	 * Gets a hue between two colors with a ratio
-	 * 
-	 * @param colorOne    the first color; 0% will be this color
-	 * @param colorTwo    the second color; 100% will be this color
-	 * @param numerator   the top of a fraction
-	 * @param denominator the bottom of a fraction
-	 * @return a hue of the two colors with a percentage taken into account
-	 */
-	public static Color getColorByPercent(Color colorOne, Color colorTwo, int numerator, int denominator) {
-		double ratio = (double) numerator / (double) denominator;
-		return getColorByPercent(colorOne, colorTwo, ratio);
-	}
-
-	/**
-	 * Gets a hue between two colors with a ratio
-	 * 
-	 * @param colorOne the first color; 0% will be this color
-	 * @param colorTwo the second color; 100% will be this color
-	 * @param percent  the ratio between two colors
-	 * @return a hue of the two colors with a percentage taken into account
-	 */
-	public static Color getColorByPercent(Color colorOne, Color colorTwo, double percent) {
-		int r = getIntByPercent(colorOne.getRed(), colorTwo.getRed(), percent);
-		int g = getIntByPercent(colorOne.getGreen(), colorTwo.getGreen(), percent);
-		int b = getIntByPercent(colorOne.getBlue(), colorTwo.getBlue(), percent);
-		int a = getIntByPercent(colorOne.getAlpha(), colorTwo.getAlpha(), percent);
-		return new Color(r, g, b, a);
-	}
-
-	/**
-	 * Calculates an integer between two integers based on a percentage
-	 * 
-	 * @param start   the starting integer; 0% is this integer
-	 * @param end     the ending integer; 100% is this integer
-	 * @param percent the ratio between the two integers
-	 * @return an integer between the starting and ending integers based on a
-	 *         percent
-	 */
-	public static int getIntByPercent(int start, int end, double percent) {
-		int diff = start - end;
-		int ans = (int) (start - (diff * percent));
-		if (ans > 255)
-			ans = 255;
-		if (ans < 0)
-			ans = 0;
-		return ans;
 	}
 }

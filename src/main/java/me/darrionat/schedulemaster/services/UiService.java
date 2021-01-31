@@ -18,7 +18,7 @@ public class UiService extends UI {
 	public static int height;
 
 	public UiService() {
-		setMinimumSize(new Dimension(600, 600));
+		setMinimumSize(new Dimension(1600, 900));
 		ImageIcon icon = new ImageIcon("res/icon.png");
 		setIconImage(icon.getImage());
 		setTitle(ScheduleMaster.NAME);
