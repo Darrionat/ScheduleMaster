@@ -14,8 +14,10 @@ import me.darrionat.schedulemaster.statics.Bootstrapper;
 public class ScheduleMaster {
 
 	public final static String NAME = "Schedule Master";
+	public static String VERSION;
 
 	public final static String RESOURCES_PATH = "src/main/resources/";
+	public final static String POM_XML_PATH = "pom.xml";
 
 	public static void main(String[] args) {
 		Bootstrapper bootstrapper = Bootstrapper.getBootstrapper();

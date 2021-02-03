@@ -25,7 +25,6 @@ public class UiService extends UI {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		initUI();
-		setVisible(true);
 	}
 
 	private static UiContainer currentMenu;

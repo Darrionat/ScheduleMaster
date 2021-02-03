@@ -10,39 +10,116 @@ import me.darrionat.schedulemaster.ui.components.UiButton;
 
 public class UiButtonHoverAnimation extends UiAnimation {
 
-	private int dX;
+	/**
+	 * The amount to change the width by
+	 */
+	private int dX = 0;
+	/**
+	 * Current amount of pixels that have been extended
+	 */
 	private int currentStep = 0;
+	/**
+	 * The max amount of extension
+	 */
 	private int maxStep = 50;
-	private boolean extending = false;
+	/**
+	 * Used to save current state of animation
+	 */
+	private boolean expanding = false;
 
+	/**
+	 * Defines if it can extend
+	 */
+	private boolean extend = true;
+	/**
+	 * Defines if it can change color
+	 */
+	private boolean changeColor = true;
+
+	/**
+	 * Create a new UiButtonHoverAnimation object. The UiButtonHoverAnimation is one
+	 * that is able to expand the width of a UiButton and gradually change its color
+	 * as the animation progresses.
+	 * 
+	 * @param button the button which should be tracked for the animation
+	 */
 	public UiButtonHoverAnimation(UiButton button) {
 		super(button);
 		maxStep = button.getWidth() / 3;
 	}
 
-	public boolean isExtending() {
-		return extending;
+	/**
+	 * Gets the current state of the animation's extending transition
+	 * 
+	 * @return returns {@code true} if the animation is currently expanding the
+	 *         UiButton
+	 */
+	public boolean isExpanding() {
+		return expanding;
 	}
 
-	public void setExtending(boolean extending) {
-		this.extending = extending;
+	/**
+	 * Define what direction the animation will expand or compress
+	 * 
+	 * @param canExpand the new state of if the UiButton animation
+	 */
+	public void setExpanding(boolean canExpand) {
+		this.expanding = canExpand;
+	}
+
+	/**
+	 * Gets if the UiButton is able to expand
+	 * 
+	 * @return {@code true} if the button is able to expand
+	 */
+	public boolean canExtend() {
+		return extend;
+	}
+
+	/**
+	 * Sets if the UiButton is able to expand
+	 * 
+	 * @param canExtend the state of if the button can expand
+	 */
+	public void setCanExtend(boolean canExtend) {
+		this.extend = canExtend;
+	}
+
+	/**
+	 * Gets the status of the UiButton being able to change color
+	 * 
+	 * @return returns {@code true} if the UiButton will change color as it animates
+	 */
+	public boolean canChangeColor() {
+		return changeColor;
+	}
+
+	/**
+	 * Sets the status of the UiButton being able to change color
+	 * 
+	 * @param changeColor {@code true} if the UiButton will change color as it
+	 *                    animates; {@code false} otherwise
+	 */
+	public void setChangeColor(boolean changeColor) {
+		this.changeColor = changeColor;
 	}
 
 	@Override
 	protected void animate(UiComponent component) {
-		if (component.isHovered()) {
-			dX = 4;
-			extending = true;
-		} else {
-			dX = -4;
-			extending = false;
-		}
+		if (extend)
+			if (component.isHovered()) {
+				dX = 4;
+				expanding = true;
+			} else {
+				dX = -4;
+				expanding = false;
+			}
 
-		if (currentStep >= maxStep && extending) {
+		if (currentStep >= maxStep && expanding) {
 			this.cancel();
 			return;
 		}
-		if (currentStep <= 0 && !extending) {
+		if (currentStep <= 0 && !expanding) {
 			this.cancel();
 			return;
 		}
@@ -52,7 +129,8 @@ public class UiButtonHoverAnimation extends UiAnimation {
 		constraints.setWidth(new PixelConstraint(width + dX));
 		currentStep += dX;
 
-		component.setUiColor(Utils.getColorByPercent(MainMenuUi.MENU_BUTTON_COLOR,
-				MainMenuUi.MENU_BUTTON_COLOR_EXTENDED, currentStep, maxStep));
+		if (changeColor)
+			component.setUiColor(Utils.getColorByPercent(MainMenuUi.BUTTON_COLOR,
+					MainMenuUi.BUTTON_COLOR_EXTENDED, currentStep, maxStep));
 	}
 }

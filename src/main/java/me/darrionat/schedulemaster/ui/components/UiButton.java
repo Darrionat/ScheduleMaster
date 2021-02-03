@@ -74,6 +74,10 @@ public class UiButton extends UiComponent implements Hoverable {
 		text.setFont(f);
 	}
 
+	public UiBlock getUiBlock() {
+		return rect;
+	}
+
 	/**
 	 * Sets the constraints of both the UiBlock and the UiText contained within the
 	 * MenuButton. Afterwards, they are added as subcomponents to MenuButton and
@@ -83,7 +87,6 @@ public class UiButton extends UiComponent implements Hoverable {
 	protected void draw(Graphics g) {
 		rect.setUiColor(uiColor);
 		rect.setConstraints(constraints);
-		System.out.println(getWidth());
 		text.setConstraints(new UiConstraints());
 		text.boundToComponent(rect, horzAlignment);
 		text.boundToComponent(rect, vertAlignment);

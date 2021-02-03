@@ -16,7 +16,6 @@ public class UiButtonHover implements Listener {
 
 	@EventHandler
 	public void onEnter(ComponentEnteredEvent e) {
-		System.out.println("Entered");
 		UiComponent component = e.getComponent();
 		if (!(component instanceof UiButton) || component.getAnimation() == null)
 			return;
@@ -27,7 +26,6 @@ public class UiButtonHover implements Listener {
 
 	@EventHandler
 	public void onExit(ComponentExitedEvent e) {
-		System.out.println("Exited");
 		if (!(e.getComponent() instanceof UiButton))
 			return;
 		if (!e.getComponent().getAnimation().isRunning()) {
