@@ -1,21 +1,11 @@
 package me.darrionat.schedulemaster.ui;
 
 import java.awt.Font;
-import java.io.File;
-
-import javax.swing.JFrame;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 import me.darrionat.darrionGL.UI;
 import me.darrionat.darrionGL.UiContainer;
 import me.darrionat.darrionGL.components.UiColor;
 import me.darrionat.darrionGL.components.UiColors;
-import me.darrionat.darrionGL.components.UiGroup;
 import me.darrionat.darrionGL.components.UiImage;
 import me.darrionat.darrionGL.components.UiText;
 import me.darrionat.darrionGL.constraints.AspectConstraint;
@@ -23,11 +13,15 @@ import me.darrionat.darrionGL.constraints.ConstraintFactory;
 import me.darrionat.darrionGL.constraints.PixelConstraint;
 import me.darrionat.darrionGL.constraints.RelativeConstraint;
 import me.darrionat.darrionGL.constraints.UiConstraints;
+import me.darrionat.darrionGL.events.ComponentClickedEvent;
+import me.darrionat.darrionGL.events.EventManager;
+import me.darrionat.darrionGL.events.annotations.EventHandler;
+import me.darrionat.darrionGL.events.interfaces.Listener;
 import me.darrionat.schedulemaster.ScheduleMaster;
 import me.darrionat.schedulemaster.ui.animations.UiButtonHoverAnimation;
 import me.darrionat.schedulemaster.ui.components.UiButton;
 
-public class MainMenuUi extends UiContainer {
+public class MainMenuUi extends UiContainer implements Listener {
 	private static final long serialVersionUID = 1L;
 
 	private static final float RECT_RADIUS = 8;
@@ -36,43 +30,54 @@ public class MainMenuUi extends UiContainer {
 	private static final float Y_GAP = 0.08f;
 	private static final float BUTTON_WIDTH = 0.2f;
 	private static final float BUTTON_HEIGHT = 0.07f;
+	public static final Font BUTTON_FONT = new Font("Anson", Font.PLAIN, 32);
 
 	public static final UiColor BUTTON_COLOR = UiColors.DARK_GREY;
 	public static final UiColor BUTTON_TEXT_COLOR = UiColors.DARK_GREY;
 	public static final UiColor BUTTON_COLOR_EXTENDED = UiColors.LIGHT_BLUE_TRANSPARENT;
 
 	private final String[] BUTTON_TEXTS = { "View Schedules", "Edit Schedule", "Employees", "Shifts", "Information" };
+	private UiButton[] buttons = new UiButton[BUTTON_TEXTS.length];
 
 	public UiButton viewSchedules;
-	private String version;
 
-	public MainMenuUi(JFrame frame) {
-		super(frame);
-		version = "Version: " + getVersion();
+	private UI ui;
+
+	public MainMenuUi(UI ui) {
+		super(ui);
+		this.ui = ui;
+		EventManager.registerListener(this);
 	}
 
 	// TODO: Finish MainMenuUi
 	// Currently all testing lines
 	@Override
 	public void setComponents() {
-		UiContainer display = UI.getContainer();
 
+		/*
+		 * The ScheduleMaster logo
+		 */
 		UiImage icon = new UiImage(ScheduleMaster.RESOURCES_PATH + "icon.png");
 		UiConstraints imageConstraints = new UiConstraints(new RelativeConstraint(0.05f), new RelativeConstraint(0.05f),
 				new PixelConstraint(270), new AspectConstraint(1));
-		display.add(icon, imageConstraints);
+		add(icon, imageConstraints);
 
-		UiGroup buttonGroup = new UiGroup();
+		/*
+		 * The main menu buttons
+		 */
 		for (int i = 0; i < BUTTON_TEXTS.length; i++) {
 			UiButton menuButton = setupUiButton(BUTTON_TEXTS[i], Y_START + i * Y_GAP);
-			buttonGroup.add(menuButton);
+			buttons[i] = menuButton;
+			add(menuButton);
 		}
-		display.add(buttonGroup);
 
-		UiText uiText = new UiText(version);
+		/*
+		 * The version text
+		 */
+		UiText uiText = new UiText("Version:" + ScheduleMaster.VERSION);
 		uiText.setFont(new Font("Anson", Font.PLAIN, 16));
 		UiConstraints textConstraints = ConstraintFactory.getRelative(0.93f, 0.95f, 0.05f, 0.05f);
-		display.add(uiText, textConstraints);
+		add(uiText, textConstraints);
 	}
 
 	private UiButton setupUiButton(String text, float yPos) {
@@ -82,25 +87,42 @@ public class MainMenuUi extends UiContainer {
 		menuButton.setConstraints(buttonConstraints);
 		menuButton.setUiColor(BUTTON_COLOR);
 		menuButton.setTextColor(UiColors.WHITE);
-		menuButton.setTextFont(new Font("Anson", Font.PLAIN, 32));
+		menuButton.setTextFont(BUTTON_FONT);
 		menuButton.setAnimation(new UiButtonHoverAnimation(menuButton));
 		menuButton.getUiBlock().setRoundedCorners(RECT_RADIUS);
 		return menuButton;
 	}
 
-	private String getVersion() {
-		File file = new File(ScheduleMaster.POM_XML_PATH);
-		try {
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			DocumentBuilder db = dbf.newDocumentBuilder();
-			Document doc = db.parse(file);
-			doc.getDocumentElement().normalize();
-			NodeList nodeList = doc.getElementsByTagName("version");
-			Element element = (Element) nodeList.item(0);
-			return element.getTextContent();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "";
+	@EventHandler
+	public void onClick(ComponentClickedEvent e) {
+		if (UI.getContainer() != this)
+			return;
+
+		for (int i = 0; i < buttons.length; i++) {
+			if (e.getComponent() == buttons[i]) {
+				setupMenu(i);
+				return;
+			}
+		}
+	}
+
+	public void setupMenu(int buttonNo) {
+		System.out.println("button no " + buttonNo);
+
+		switch (buttonNo) {
+		case 0:
+			break;
+		case 1:
+			break;
+		case 2:
+			ui.setCurrentContainer(new EmployeesUi(ui));
+			break;
+		case 3:
+			break;
+		case 4:
+			break;
+		case 5:
+			break;
 		}
 	}
 }

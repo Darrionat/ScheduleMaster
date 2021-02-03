@@ -1,7 +1,7 @@
 package me.darrionat.schedulemaster.ui.components;
 
 import java.awt.Font;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import me.darrionat.darrionGL.components.UiBlock;
 import me.darrionat.darrionGL.components.UiColor;
@@ -84,7 +84,7 @@ public class UiButton extends UiComponent implements Hoverable {
 	 * will be displayed through their own methods.
 	 */
 	@Override
-	protected void draw(Graphics g) {
+	protected void draw(Graphics2D g2D) {
 		rect.setUiColor(uiColor);
 		rect.setConstraints(constraints);
 		text.setConstraints(new UiConstraints());

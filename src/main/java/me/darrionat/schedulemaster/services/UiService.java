@@ -1,40 +1,24 @@
 package me.darrionat.schedulemaster.services;
 
 import java.awt.Dimension;
-import java.awt.Font;
 
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 
 import me.darrionat.darrionGL.UI;
-import me.darrionat.darrionGL.UiContainer;
 import me.darrionat.schedulemaster.ScheduleMaster;
+import me.darrionat.schedulemaster.ui.MainMenuUi;
 
 public class UiService extends UI {
 
 	private static final long serialVersionUID = 1L;
 
-	public static int width;
-	public static int height;
-
 	public UiService() {
-		setMinimumSize(new Dimension(1600, 900));
-		ImageIcon icon = new ImageIcon("res/icon.png");
-		setIconImage(icon.getImage());
+		// 1600x900
+		setMinimumSize(new Dimension(1599, 899));
+		setIconImage(new ImageIcon(ScheduleMaster.RESOURCES_PATH + "icon.png").getImage());
 		setTitle(ScheduleMaster.NAME);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLocationRelativeTo(null);
 		initUI();
+		setCurrentContainer(new MainMenuUi(this));
+		setMinimumSize(new Dimension(1600, 900));
 	}
-
-	private static UiContainer currentMenu;
-
-	public static UiContainer getContainer() {
-		return currentMenu;
-	}
-
-	/**
-	 * The font used for menu buttons
-	 */
-	public static final Font buttonFont = new Font("Anson", Font.PLAIN, 24);
 }

@@ -4,14 +4,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>me.darrionat</groupId>
 	<artifactId>scheduleMaster</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.3</version>
 
 
 	<dependencies>
 		<dependency>
 			<groupId>me.darrionat</groupId>
 			<artifactId>darrionGL</artifactId>
-			<version>0.0.2</version>
+			<version>0.0.3</version>
 		</dependency>
 	</dependencies>
 </project>

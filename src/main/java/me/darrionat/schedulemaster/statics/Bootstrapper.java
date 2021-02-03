@@ -15,7 +15,6 @@ import me.darrionat.schedulemaster.repositories.ShiftsRepository;
 import me.darrionat.schedulemaster.services.EmployeeService;
 import me.darrionat.schedulemaster.services.ScheduleService;
 import me.darrionat.schedulemaster.services.UiService;
-import me.darrionat.schedulemaster.ui.MainMenuUi;
 
 /**
  * The Bootstrapper class is used to initialize all repositories then services
@@ -61,9 +60,10 @@ public class Bootstrapper {
 		employeeService = new EmployeeService(fileRepository, employeeRepository);
 		scheduleService = new ScheduleService(shiftsRepository, employeeRepository);
 
+		// Registers a listener
 		new UiButtonHover();
+		// Starts UI
 		guiService = new UiService();
-		guiService.setCurrentContainer(new MainMenuUi(guiService));
 	}
 
 	public static Bootstrapper getBootstrapper() {
